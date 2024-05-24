@@ -1,0 +1,80 @@
+<!DOCTYPE html> 
+{% extends 'index.html' %}
+{% block contend %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="text-align: center;">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <h1>PRODUCT DETAIL</h1>
+
+
+        <select name="category" id="category" placeholder="category">
+            <option value="" disabled selected >Select Category</option>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}">{{ cat.cname }}</option>
+            {% endfor %}
+        </select><br><br>
+
+
+        <select name="brand" id="brand">
+            <option value="" disabled selected >Select Brand</option> 
+            {% for brands in brands %}
+                <option value="{{ brands.id }}">{{ brands.brand }}</option>
+            {% endfor %}
+        </select><br><br>
+    
+
+        <input type="text" name="product" placeholder="product"><br><br>
+        <input type="text" name="size" placeholder="Size"><br><br>
+        <input type="text" name="landing_price" placeholder="landing_price"><br><br>
+        <input type="text" name="selling_price" placeholder="selling_price"><br><br>
+        <input type="text" name="description" placeholder="Description"><br><br>
+        <input type="file" name="image"><br><br>
+
+
+        <select name="is_listed" id="is_listed">
+            <option value="True">List</option>
+            <option value="False">Unlist</option>
+        </select><br><br>
+
+
+        <button type="submit">REGISTER</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
+
+    {% if messages %}
+        {% for i in messages %}
+            {% if i.tags == 'warning' %}
+                <script>
+                    swal('{{i}}', '', 'warning')
+                </script>
+            {% elif i.tags == 'error' %}
+                <script>
+                    swal('{{i}}', '', 'error')
+                </script>
+            {% elif i.tags == 'success' %}
+                <script>
+                    swal('{{i}}', '', 'success')
+                </script>
+            {% else %}
+                <script>
+                    swal('{{i}}', '', 'info')
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+</body>
+</html>
+{% endblock %}
