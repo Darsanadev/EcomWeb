@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% extends 'index.html' %}
+{% block contend %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="text-align: center;">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1> EDit CATEGORY</h1>
+        <input type="text" name="cname" placeholder="name" value="{{cname}}"><br><br>
+        <input type="text" name="description" placeholder="Description" value="{{description}}"><br><br>
+        <select name="is_listed" id="is_listed">
+            <option value="True">List</option>
+            <option value="False">Unlist</option>
+        </select><br><br>
+        <input type="file" name="image" value="{{image.url}}"><br><br>
+        <button type="submit">UPdatE</button>
+    </form>
+</body>
+</html>
+{% endblock %}
