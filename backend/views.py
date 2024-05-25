@@ -38,6 +38,9 @@ def brand(request):
         brand = request.POST.get('brand')
         description = request.POST.get('description')
         is_listed = request.POST.get('is_listed')
+        if Brand.objects.filter(brand=brand).exists():
+            message = "Brand with this name alrdy exists."
+            return render(request, 'brand.html', {"message": message})
         brand = Brand(brand=brand, description=description, is_listed=is_listed)
         brand.save()  
     return render(request, 'brand.html')
@@ -75,8 +78,12 @@ def prodata(request):
         selling_price = request.POST.get('selling_price')
         description = request.POST.get('description')   
         image = request.FILES['image']
+        image1 = request.FILES['image1']
+        image2 = request.FILES['image2']
+        image3 = request.FILES['image3']
         is_listed = request.POST.get('is_listed')  
-        pro = Product(category=category, brand=brand, product=product, size=size, landing_price=landing_price, selling_price=selling_price, description=description, image=image, is_listed=is_listed)
+        pro = Product(category=category, brand=brand, product=product, size=size, landing_price=landing_price, selling_price=selling_price, 
+                      description=description, image=image,image1=image1,image2=image2,image3=image3, is_listed=is_listed)
         pro.save() 
     categories = Category.objects.all()
     brands = Brand.objects.all()
@@ -97,16 +104,4 @@ def prodelete(request):
 
 def userdata(request):
     return render(request, 'userdata.html')
-
-def data(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        image = request.FILES['image']
-        dataa = Data(name=name, image=image)
-        dataa.save()
-    return render(request, 'data.html')
-
-def display(request):
-    dataa = Data.objects.all()
-    return render(request, 'display.html', {'datta':dataa})
 

@@ -18,6 +18,11 @@
             <option value="False">Unlist</option>
         </select><br><br>
         <button type="submit">REGISTER</button>
+        
+    {% if message %}
+        <p style=" font-size: 17px; color: red; margin-top: 30px;">{{ message }}</p>
+    {% endif %}
+    
 
     </form>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

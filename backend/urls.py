@@ -21,7 +21,6 @@ urlpatterns = [
     path('branddelete/<int:id>/', views.branddelete, name='branddelete'),
 
     path('userdata/', views.userdata, name='userdata'),
-    path('data/', views.data, name='data'),
-    path('display/', views.display, name='display'),
+   
 
 ]

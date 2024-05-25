@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="icon" href="img/favicon.png" type="image/png" />
+  <title>EcomWebste</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% static 'Home/css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/linericon/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/font-awesome.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/themify-icons.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/flaticon.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/owl-carousel/owl.carousel.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/lightbox/simpleLightbox.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/nice-select/css/nice-select.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/animate-css/animate.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/jquery-ui/jquery-ui.css' %}" />
+  <!-- main css -->
+  <link rel="stylesheet" href="{% static 'Home/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/responsive.css' %}" />
+</head>
+
+<body>
+
+
+      
+  <!--================Header Menu Area =================-->
+  <header class="header_area">
+    <div class="top_menu">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-7">
+            <div class="float-left">
+              <p></p>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="float-right">
+              <ul class="right_side">
+                
+                <li>
+                  <a href="{% url 'frntnd:account' %}">MY Account</a>
+                </li>
+                <li>
+                  <a href="{% url 'frntnd:whishlist' %}">whishlist</a>
+                </li>
+                <li>
+                  <a href="{% url 'frntnd:contact' %}">orders</a>
+                </li>
+                <li>
+                  <a href="{% url 'frntnd:contact' %}">Contact Us</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main_menu">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light w-100">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <a class="navbar-brand logo_h" href="index.html">
+            <img src="img/logo.png" alt="" />
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+        
+          <div class="collapse navbar-collapse offset w-100" id="navbarSupportedContent">
+            <div class="row w-100 mr-0">
+              
+              <div class="col-lg-7 pr-0">
+                <ul class="nav navbar-nav center_nav pull-right">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'frntnd:home' %}">Home</a>
+                  </li>
+                  <li class="nav-item submenu dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                      aria-expanded="false">Shop</a>
+                    <ul class="dropdown-menu">
+                     
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'frntnd:home' %}">Product Details</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'frntnd:home' %}">Product Checkout</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'frntnd:home' %}">Shopping Cart</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- category dropdown -->
+                   <li class="nav-item submenu dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                      aria-expanded="false">Category</a>
+                    <ul class="dropdown-menu">
+
+                      {% for i in cate %}
+                      <li class="nav-item"><a class="nav-link" href="{% url 'frntnd:category' catname=i.cname %}">{{i.cname}}</a></li>
+                      {% endfor %}
+
+                    </ul>
+                  </li>
+                  <!-- brand dropdown -->
+                  <li class="nav-item submenu dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                      aria-expanded="false">Brand</a>
+                    <ul class="dropdown-menu">
+
+                      {% for brands in brand %}
+                      <li class="nav-item"><a class="nav-link" href="">{{brands.brand}}</a></li>
+                      {% endfor %}
+
+                    </ul>
+                  </li>
+                 
+                  <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Products</a>
+                  </li>
+                  <div style="margin-right: -107px;">
+                  <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Register / Login</a>
+                  </li>
+                  </div>
+                </ul>
+              </div>
+            
+              <div class="col-lg-5 pr-0">
+                <ul class="nav navbar-nav navbar-right right_nav pull-right">
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-search" aria-hidden="true"></i>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-shopping-cart"></i>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-user" aria-hidden="true"></i>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-heart" aria-hidden="true"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <!--================Header Menu Area =================-->
+
+
+<!--================Single Product Area =================-->
+{% for products in pro %}
+<div class="product_image_area" style="margin-top: -50px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="left-side">
+          <div class="border">
+            <img  id="imgg" style="width: 100%;"
+                      src="{{products.image.url}}"
+                      alt="First slide"/>
+                    </div>
+          <div class="sideimg">
+            
+              <div class="div1">
+                <a href=""><img id="img1" style="width: 111px;" src="{{products.image.url}}" alt=""></a><br><br>
+              </div>
+
+            <a href=""><img id="img2" style="width: 111px;"  src="{{products.image.url}}" alt=""></a><br><br>
+            <a href=""><img id="img3" style="width: 111px;"  src="{{products.image.url}}" alt=""></a><br><br>
+
+          </div>
+          
+        </div>
+
+      </div>
+      <div class="col-md-6">
+        <div class="right-side">
+          <p></p>
+          <h2>{{products.product}}</h2><br>
+          <h3>{{products.brand}}</h3><br>
+          <h5>{{products.description}}</h5><br>
+          <div class="card-area">
+            <h4><s style="color: gray;" >{{products.landing_price}}</s>   <span style="margin-left: 40px;"> ${{products.selling_price}}</span></h4>
+
+          </div><br>
+          <li><a href="#"> <span>Availibility</span> : In Stock</a></li><br>
+          <h5 style="color: green;">Free Shipping <s style="color: gray;">40</s></h5><br>
+
+          <label for="" >Quantity : </label>
+          <input type="number" name="" value="1" min="1" ><br><br>
+
+        
+          <div class="card-area">
+            <button class="singlebtn"><a  href="{% url 'frntnd:cart' %}"> ADD to CART</a></button>
+            <button class="singlebtn" style="margin-left: 300px;"><a  href="{% url 'frntnd:cart' %}">BUY NOW</a></button>
+          </div>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  
+  .sideimg{
+    margin-left: -170px;
+    position: absolute;
+    margin-top: -550px;
+  }
+  .right-side{
+    
+    margin-left: 100px;
+    position: relative;
+  }
+  .singlebtn{
+    
+    width: 250px;
+    height: 60px;
+    border: none;
+    font-size: 21px;
+    color: #000;
+    background-color: rgb(246, 167, 20);
+
+  }
+</style>
+{% endfor %}
+<!--================ End Single Product Area =================-->
+  
+
+  
+  <!--================ Inspired Product Area =================-->
+  
+  <section class="inspired_product_area section_gap_bottom_custom">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div class="main_title">
+            <h2 style="margin-top: 170px;"><span>Related Products</span></h2>
+            <p></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        {% for products in pro %}
+        <div class="col-lg-3 col-md-6">
+          <div class="single-product">
+            <div class="product-img">
+              <a href="{% url 'frntnd:singleproduct' %}">
+              <img class="img-fluid w-100" src="{{products.image.url}}" alt="" /></a>
+              <div class="p_icon">
+                <a href="#">
+                  <i class="ti-eye"></i>
+                </a>
+                <a href="#">
+                  <i class="ti-heart"></i>
+                </a>
+                <a href="#">
+                  <i class="ti-shopping-cart"></i>
+                </a>
+              </div>
+            </div>
+            <div class="product-btm">
+              <a href="#" class="d-block">
+                <h4>{{products.product}}</h4>
+                <!-- <p>{{products.description}}</p> -->
+             </a>
+              <div class="mt-3">
+                
+                <span class="mr-4">$ {{products.selling_price}}</span>
+                <del> {{products.landing_price}}</del>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+   </section> 
+
+
+   <div style="text-align: center;">
+    <button class="btn0">Click here to hide</button>  
+    <button class="btn1">Click here to show</button>  
+    <h1 class="hlo">Hallooo</h1>
+
+</div>
+
+<div style="text-align: center;"><br><br>
+<button class="btn">Click here to show</button>
+
+<div  style="display: none;" id="div1">
+    <h1>Welcome</h1>
+    <input type="text" placeholder="Name" name="" id=""><br><br>
+    <input type="text" placeholder="Place" name="" id=""><br><br>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".btn").click(function(){
+            $("#div1").show()
+        })
+        $(".btn0").click(function(){
+            $(".hlo").hide()
+        })
+        $(".btn1").click(function(){
+            $(".hlo").show()
+        })
+
+
+
+
+
+        $("#img1").mouseenter(function(){
+          $("#imgg").toggle()
+        })
+
+
+    })
+
+
+  //   $(document).ready(function(){
+  //     $("#img1").mouseenter(function(){
+  //       $("#img1").show()
+  //       $("#imgg").hide()
+  //     })
+  // })
+</script>
+   
+
+
+
+  <!--================ End Inspired Product Area =================-->
+
+
+
+
+
+
+
+  <!--================ start footer Area  =================-->
+  <footer class="footer-area section_gap">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-2 col-md-6 single-footer-widget">
+          <h4>Top Products</h4>
+          <ul>
+            <li><a href="#">Managed Website</a></li>
+            <li><a href="#">Manage Reputation</a></li>
+            <li><a href="#">Power Tools</a></li>
+            <li><a href="#">Marketing Service</a></li>
+          </ul>
+        </div>
+         
+        <div class="col-lg-2 col-md-6 single-footer-widget">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Our Services</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-6 single-footer-widget">
+          <h4>Features</h4>
+          <ul>
+            <li><a href="#">Jobs</a></li>
+            <li><a href="#">Brand Assets</a></li>
+            <li><a href="#">Investor Relations</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div> 
+        <div class="col-lg-2 col-md-6 single-footer-widget">
+          <h4>Address</h4>
+          <ul>
+            <li><a href="#">Palakkad, Kerala</a></li>
+            <li>+91 8943115523</li>
+            <li>Shopzie@gmail.com</a></li>
+            
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-6 single-footer-widget">
+          
+        </div>
+      </div>
+      <div class="footer-bottom row align-items-center">
+        
+        <p class="footer-text m-0 col-lg-8 col-md-12"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+<!-- Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> -->
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+        <div class="col-lg-4 col-md-12 footer-social">
+          <a href="#"><i class="fa fa-facebook"></i></a>
+          <a href="#"><i class="fa fa-twitter"></i></a>
+          <a href="#"><i class="fa fa-dribbble"></i></a>
+          <a href="#"><i class="fa fa-behance"></i></a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </footer>
+  <!--================ End footer Area  =================-->
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="{% static 'Home/js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'Home/js/popper.js' %}"></script>
+  <script src="{% static 'Home/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'Home/js/stellar.js' %}"></script>
+  <script src="{% static 'Home/vendors/lightbox/simpleLightbox.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/nice-select/js/jquery.nice-select.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/isotope/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/isotope/isotope-min.js' %}"></script>
+  <script src="{% static 'Home/vendors/owl-carousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'Home/js/jquery.ajaxchimp.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/counter-up/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/counter-up/jquery.counterup.js' %}"></script>
+  <script src="{% static 'Home/js/mail-script.js' %}"></script>
+  <script src="{% static 'Home/js/theme.js' %}"></script>
+</body>
+
+</html>

@@ -27,4 +27,7 @@ class Product(models.Model):
     selling_price = models.IntegerField(null=True, blank=True)  
     description = models.TextField(blank=True, null=True) 
     image = models.ImageField(upload_to='media', null=True, blank=True)
+    image1 = models.ImageField(upload_to='media', null=True, blank=True)
+    image2 = models.ImageField(upload_to='media', null=True, blank=True)
+    image3 = models.ImageField(upload_to='media', null=True, blank=True)
     is_listed = models.BooleanField(default=True, null=True, blank=True)   
