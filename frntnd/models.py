@@ -2,14 +2,33 @@ from django.db import models
 
 # Create your models here.
 
+class Account(models.Model):
+    name = models.CharField(max_length=100,null=True,  blank=True)
+    phone = models.BigIntegerField(null=True, blank=True)
+    state = models.CharField(max_length=200, null=True, blank=True)
+    city = models.CharField(max_length=200, null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    pin = models.IntegerField(null=True, blank=True)
 
-# class Product(models.Model):    
-#     category = models.ForeignKey(Category, on_delete=models.CASCADE, default='somee string')  
-#     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, default='someee string')   
-#     product = models.CharField(max_length=200, null=True, blank=True)    
-#     size = models.IntegerField(null=True, blank=True)   
-#     landing_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)     
-#     selling_price = models.IntegerField(null=True, blank=True)  
-#     description = models.TextField(blank=True, null=True) 
-#     is_listed = models.BooleanField(default=True, null=True, blank=True)   
 
+class Cart(models.Model):
+    image = models.ImageField(upload_to='media', null=True, blank=True)
+    user = models.CharField(max_length=200, blank=True)
+    orderdate = models.DateTimeField(auto_now_add=True)
+    product = models.CharField(max_length=200, blank=True)
+    quantity = models.PositiveIntegerField()
+    price = models.IntegerField( blank=True)
+    total = models.IntegerField(null=True, blank=True)
+
+
+class Login(models.Model):
+    username = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    password = models.CharField(max_length=100, null=True, blank=True)
+
+
+class OTP(models.Model):
+    username = models.ForeignKey(Login, on_delete=models.CASCADE)
+    otp_code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    verified = models.BooleanField(default=False)

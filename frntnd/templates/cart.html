@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="icon" href="img/favicon.png" type="image/png" />
+  <title>EcomWebste</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% static 'Home/css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/linericon/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/font-awesome.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/themify-icons.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/flaticon.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/owl-carousel/owl.carousel.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/lightbox/simpleLightbox.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/nice-select/css/nice-select.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/animate-css/animate.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/jquery-ui/jquery-ui.css' %}" />
+  <!-- main css -->
+  <link rel="stylesheet" href="{% static 'Home/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/responsive.css' %}" />
+</head>
+
+<body style="background-color: rgb(245, 241, 241);">
+
+
+      
+  <!--================Header Menu Area =================-->
+  <header class="header_area">
+    <div class="top_menu">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-7">
+            <div class="float-left">
+              <p></p>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="float-right">
+              <ul class="right_side">
+                
+                <li>
+                  <a href="{% url 'frntnd:account' %}">MY Account</a>
+                </li>
+                <li>
+                  <a href="{% url 'frntnd:whishlist' %}">whishlist</a>
+                </li>
+                <li>
+                  <a href="{% url 'frntnd:contact' %}">orders</a>
+                </li>
+                <li>
+                  <a href="{% url 'frntnd:contact' %}">Contact Us</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main_menu">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light w-100">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <a class="navbar-brand logo_h" href="index.html">
+            <img src="img/logo.png" alt="" />
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+        
+          <div class="collapse navbar-collapse offset w-100" id="navbarSupportedContent">
+            <div class="row w-100 mr-0">
+              
+              <div class="col-lg-7 pr-0">
+                <ul class="nav navbar-nav center_nav pull-right">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'frntnd:home' %}">Home</a>
+                  </li>
+                  <li class="nav-item submenu dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false">Shop</a>
+                    <ul class="dropdown-menu">
+                     
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'frntnd:home' %}">Product Details</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'frntnd:home' %}">Product Checkout</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'frntnd:home' %}">Shopping Cart</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- category dropdown -->
+                   <li class="nav-item submenu dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false">Category</a>
+                    <ul class="dropdown-menu">
+
+                      {% for i in cate %}
+                      <li class="nav-item"><a class="nav-link" href="{% url 'frntnd:category' catname=i.cname %}">{{i.cname}}</a></li>
+                      {% endfor %}
+
+                    </ul>
+                  </li>
+                  <!-- brand dropdown -->
+                  <li class="nav-item submenu dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false">Brand</a>
+                    <ul class="dropdown-menu">
+
+                      {% for brands in brand %}
+                      <li class="nav-item"><a class="nav-link" href="">{{brands.brand}}</a></li>
+                      {% endfor %}
+
+                    </ul>
+                  </li>
+                 
+                  <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Products</a>
+                  </li>
+                  <div style="margin-right: -107px;">
+                  <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Register / Login</a>
+                  </li>
+                  </div>
+                </ul>
+              </div>
+            
+              <div class="col-lg-5 pr-0">
+                <ul class="nav navbar-nav navbar-right right_nav pull-right">
+                  <li class="nav-item">
+                    <a href="#" class="icons"><i class="ti-search" aria-hidden="true"></i></a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-shopping-cart"></i>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-user" aria-hidden="true"></i>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-heart" aria-hidden="true"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <!--================Header Menu Area =================-->
+
+
+<!--  Cart area   -->
+{% for carts in cartt %}
+<div class="cart-area">
+  <div class="container">
+    <div class="col-md-6">
+
+    <div class="leftside">
+      <div class="cartitem">
+        <div class="img">
+          <a><img src="{{ cart.img.url}}" class="imgg" alt=""></a>
+        </div>
+        <div class="konjmthalli">
+          
+          <h4>{{carts.product}} <span>{{products.carts}}</span></h4>
+          <h5>{{carts.description}}</h5><br>
+         
+          <div class="card-area">
+            <h4><s style="color: gray;" class="total"  >123</s>  
+              <span style="margin-left: 20px;" class="total" > 657</span></h4>
+          </div>
+        
+          <h5 style="color: green;">Free Shipping <s style="color: gray;" class="">40</s></h5>
+
+          <input type="number" min="1" class="qtyy" id="">
+          <a href="removecar/{{carts.id}}"><button class="btnn">Remove</button></a>
+        </div>
+        
+        <hr>
+      
+
+      <button class="orderbtn">PlAceOrDeR</button>
+
+      </div>
+
+<!--      right side amount div  -->
+
+    <div class="rightside">
+      <div class="amounts">
+        <div class="sentance">
+          <h4 style="color: grey;">PRICE DETAILS</h4>
+          <hr>
+          <h5>Price <span>4</span></h5><br>
+          <h5>Discount</h5><br>
+          <h5>Delivery Charge</h5><br>
+          <hr>
+          <h4>Total Amount </h4>
+
+        </div>
+        <div class="money">
+    
+          <h4>4</h4><br>
+          <h4>6</h4><br>
+          <h4>4</h4><br><br>
+          <h4>5</h4>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+<style>
+  /* left side */
+
+  .container{
+    left: 10px;
+    right: 10px;
+    position: relative;
+
+  }
+  .cartitem{
+    width: 900px;
+    height: auto;
+    margin: 10px;
+    padding: 20px;
+    margin-left: -130px;
+    background-color: white;
+    position: relative;
+
+  }
+
+  .imgg{
+    width: 130px;
+    height: 140px;
+    margin-left: 20px;
+
+
+  }
+
+  .qtyy{
+    width: 80px;
+    height: 33px;
+    margin-left: -80px;
+
+  }
+  .btnn{
+    border: none;
+    font-size: 21px;
+    background: none;
+    margin-left: 20px;
+
+  }
+.konjmthalli{
+  margin-left: 250px;
+  margin-top: -100px;
+
+}
+.orderbtn{
+  width: 200px;
+  height: 60px;
+  background-color: orange;
+  font-size: 25px;
+  border-radius: 4px;
+  border: none;
+  margin-left: 550px;
+  position: sticky;
+
+
+}
+  /* right side  */
+  .amounts{
+    width: 400px;
+    margin-left: 60%;
+    margin-top: -50px;
+    height: 350px;
+    background-color: white;
+    position: fixed;
+    padding: 20px;
+    border-radius: 3px;
+    z-index: 8px;
+
+  }
+  .money{
+    margin-left: 270px;
+    margin-top: -227px;
+
+  }
+</style>
+
+  <!--================ start footer Area  =================-->
+  <footer class="footer-area section_gap" style="margin-top: 800px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-2 col-md-6 single-footer-widget">
+          <h4>Top Products</h4>
+          <ul>
+            <li><a href="#">Managed Website</a></li>
+            <li><a href="#">Manage Reputation</a></li>
+            <li><a href="#">Power Tools</a></li>
+            <li><a href="#">Marketing Service</a></li>
+          </ul>
+        </div>
+         
+        <div class="col-lg-2 col-md-6 single-footer-widget">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Our Services</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-6 single-footer-widget">
+          <h4>Features</h4>
+          <ul>
+            <li><a href="#">Jobs</a></li>
+            <li><a href="#">Brand Assets</a></li>
+            <li><a href="#">Investor Relations</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div> 
+        <div class="col-lg-2 col-md-6 single-footer-widget">
+          <h4>Address</h4>
+          <ul>
+            <li><a href="#">Palakkad, Kerala</a></li>
+            <li>+91 8943115523</li>
+            <li>Shopzie@gmail.com</a></li>
+            
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-6 single-footer-widget">
+          
+        </div>
+      </div>
+      <div class="footer-bottom row align-items-center">
+        
+        <p class="footer-text m-0 col-lg-8 col-md-12"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+<!-- Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> -->
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+        <div class="col-lg-4 col-md-12 footer-social">
+          <a href="#"><i class="fa fa-facebook"></i></a>
+          <a href="#"><i class="fa fa-twitter"></i></a>
+          <a href="#"><i class="fa fa-dribbble"></i></a>
+          <a href="#"><i class="fa fa-behance"></i></a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </footer>
+  <!--================ End footer Area  =================-->
+
+
+
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="{% static 'Home/js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'Home/js/popper.js' %}"></script>
+  <script src="{% static 'Home/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'Home/js/stellar.js' %}"></script>
+  <script src="{% static 'Home/vendors/lightbox/simpleLightbox.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/nice-select/js/jquery.nice-select.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/isotope/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/isotope/isotope-min.js' %}"></script>
+  <script src="{% static 'Home/vendors/owl-carousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'Home/js/jquery.ajaxchimp.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/counter-up/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/counter-up/jquery.counterup.js' %}"></script>
+  <script src="{% static 'Home/js/mail-script.js' %}"></script>
+  <script src="{% static 'Home/js/theme.js' %}"></script>
+</body>
+
+</html>

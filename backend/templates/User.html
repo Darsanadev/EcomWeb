@@ -16,23 +16,29 @@
                     <thead>  
                       <tr>  
                         
-                        <th>Brand</th> 
-                        <th>Description</th>   
-                        <th>Show / Naah</th>  
+                        <th>Name</th> 
+                        <th>Phone</th>   
+                        <th>State</th>
+                        <th>city</th>  
+                        <th>Address</th>
+                        <th>Pin</th>
                         
                       </tr>
                     </thead>
                     <tbody>
                       
-                    {% for brands in brand %}
+                    {% for accounts  in acc %}
                     <tr>
-                        <td>{{brands.brand}}</td>
-                        <td>{{brands.description}}</td>
-                        <td>{{brands.is_listed}}</td>
+                        <td>{{accounts.name}}</td>
+                        <td>{{accounts.phone}}</td>
+                        <td>{{accounts.state}}</td>
+                        <td>{{accounts.city}}</td>
+                        <td>{{accounts.address}}</td>
+                        <td>{{accounts.pin}}</td>
                         <td>
                           <a href="">
                             <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
-                              <span>List</span> <span style="display: none;">Un List</span>               
+                              <span>Block</span> <span style="display: none;">Un Block</span>               
                             </button> 
                             
                           </a>
@@ -43,7 +49,7 @@
                                 </button> 
                             </a>
                             
-                          
+                        
                             <a href="branddelete/{{brands.id}}">
                                 <button type="button" class="btn btn-danger btn-sm btn-icon-text">
                                     Delete

@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from .models import  Category, Brand, Product
+from frntnd.models import Account
 
 # Create your views here.           
 
@@ -13,23 +14,28 @@ def categorydata(request):
         cname = request.POST.get('cname')
         description = request.POST.get('description')
         image = request.FILES['image']
-        is_listed = request.POST.get('is_listed')
+        is_listed = request.POST.get('is_listed')  
         cate = Category(cname=cname, description=description, image=image, is_listed=is_listed)
         cate.save()
+        if is_listed:
+            message = f"Category '{cname}' is listed."
+        else:
+            message = f"Category '{cname}' is not listed."
+        return HttpResponse(message)  # Simple response displaying the message
     return render(request, 'categorydata.html')  
         
 def categorydisplay(request):
     cate = Category.objects.all()
     return render(request, 'categorydisplay.html', {'cate': cate})
 
-def categoryedit(request):
-    return render(request,'categorydisplay')
+def categoryedit(request, id):
+   
+    return render
 
-def categorydelete(request, id):
+def categorydelete(id):
     cate = Category.objects.get(id=id)
     cate.delete()
-    return redirect(categorydisplay)
-
+    return redirect('categorydisplay')
 
 # views of brands
 
@@ -49,11 +55,10 @@ def branddisplay(request):
     brand = Brand.objects.all()
     return render(request, 'branddisplay.html', {'brand': brand})
 
-def branddelete(request, id):
+def branddelete(id):
     brand = Brand.objects.get(id=id)
     brand.delete()
     return redirect(branddisplay)
-
 
 # views of Products
 
@@ -95,13 +100,20 @@ def prodisplay(request):
     brand = Brand.objects.all()
     return render(request, 'prodisplay.html', {'pro': pro, 'cate': cate, 'brand': brand})
 
-def proedit(request):
-    return redirect('prodisplay')
+# views of user 
 
-def prodelete(request):
-    return redirect('prodisplay')
+def user(request):
+    acc = Account.objects.all()
+    return render(request, 'user.html', {'acc': acc})
 
 
 def userdata(request):
     return render(request, 'userdata.html')
 
+
+def proedit():
+    return redirect('prodisplay')
+
+
+def prodelete():
+    return redirect('prodisplay')

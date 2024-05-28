@@ -25,183 +25,137 @@
 </head>
 
 <body>
-    <!--================Header Menu Area =================-->
-    <header class="header_area">
-      <div class="top_menu">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-7">
-              <div class="float-left">
-                <p>Phone: +01 256 25 235</p>
-                <p>email: info@eiser.com</p>
-              </div>
+
+
+        
+  <!--================Header Menu Area =================-->
+  <header class="header_area">
+    <div class="top_menu">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-7">
+            <div class="float-left">
+              <p></p>
             </div>
-            <div class="col-lg-5">
-              <div class="float-right">
-                <ul class="right_side">
-                  <li>
-                    <a href="cart.html">
-                      gift card
+          </div>
+          <div class="col-lg-5">
+            <div class="float-right">
+              <ul class="right_side">
+                
+                <li>
+                  <a href="{% url 'frntnd:account' %}">MY Account</a>
+                </li>
+                <li>
+                  <a href="{% url 'frntnd:whishlist' %}">whishlist</a>
+                </li>
+                <li>
+                  <a href="{% url 'frntnd:contact' %}">orders</a>
+                </li>
+                <li>
+                  <a href="{% url 'frntnd:contact' %}">Contact Us</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main_menu">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light w-100">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <a class="navbar-brand logo_h" href="index.html">
+            <img src="img/logo.png" alt="" />
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+        
+          <div class="collapse navbar-collapse offset w-100" id="navbarSupportedContent">
+            <div class="row w-100 mr-0">
+              
+              <div class="col-lg-7 pr-0">
+                <ul class="nav navbar-nav center_nav pull-right">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'frntnd:home' %}">Home</a>
+                  </li>
+                  
+                  <!-- category dropdown -->
+                   <li class="nav-item submenu dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"  aria-haspopup="true"
+                      aria-expanded="false">Category</a>
+                    <ul class="dropdown-menu">
+
+                      {% for i in cate %}
+                      <li class="nav-item"><a class="nav-link" href="{% url 'frntnd:category' catname=i.cname %}">{{i.cname}}</a></li>
+                      {% endfor %}
+
+                    </ul>
+                  </li>
+                  <!-- brand dropdown -->
+                  <li class="nav-item submenu dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"  aria-haspopup="true"
+                      aria-expanded="false">Brand</a>
+                    <ul class="dropdown-menu">
+
+                      {% for brands in brand %}
+                      <li class="nav-item"><a class="nav-link" href="{% url 'frntnd:product' %}">{{brands.brand}}</a></li>
+                      {% endfor %}
+
+                    </ul>
+                  </li>
+                 
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'frntnd:product' %}">Products</a>
+                  </li>
+                  <div style="margin-right: -107px;">
+                  <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Register / Login</a>
+                  </li>
+                  </div>
+                </ul>
+              </div>
+            
+              <div class="col-lg-5 pr-0">
+                <ul class="nav navbar-nav navbar-right right_nav pull-right">
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-search" aria-hidden="true"></i>
                     </a>
                   </li>
-                  <li>
-                    <a href="tracking.html">
-                      track order
+
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-shopping-cart"></i>
                     </a>
                   </li>
-                  <li>
-                    <a href="contact.html">
-                      Contact Us
+
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-user" aria-hidden="true"></i>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="#" class="icons">
+                      <i class="ti-heart" aria-hidden="true"></i>
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-        </div>
+        </nav>
       </div>
-      <div class="main_menu">
-        <div class="container">
-          <nav class="navbar navbar-expand-lg navbar-light w-100">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <a class="navbar-brand logo_h" href="index.html">
-              <img src="img/logo.png" alt="" />
-            </a>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div
-              class="collapse navbar-collapse offset w-100"
-              id="navbarSupportedContent"
-            >
-              <div class="row w-100 mr-0">
-                <div class="col-lg-7 pr-0">
-                  <ul class="nav navbar-nav center_nav pull-right">
-                    <li class="nav-item">
-                      <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item active submenu dropdown">
-                      <a
-                        href="#"
-                        class="nav-link dropdown-toggle"
-                        data-toggle="dropdown"
-                        role="button"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        >Shop</a
-                      >
-                      <ul class="dropdown-menu">
-                        <li class="nav-item">
-                          <a class="nav-link" href="category.html"
-                            >Shop Category</a
-                          >
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="single-product.html"
-                            >Product Details</a
-                          >
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="checkout.html"
-                            >Product Checkout</a
-                          >
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="cart.html">Shopping Cart</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="nav-item submenu dropdown">
-                      <a
-                        href="#"
-                        class="nav-link dropdown-toggle"
-                        data-toggle="dropdown"
-                        role="button"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        >Blog</a
-                      >
-                      <ul class="dropdown-menu">
-                        <li class="nav-item">
-                          <a class="nav-link" href="blog.html">Blog</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="single-blog.html"
-                            >Blog Details</a
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="nav-item submenu dropdown">
-                      <a
-                        href="#"
-                        class="nav-link dropdown-toggle"
-                        data-toggle="dropdown"
-                        role="button"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        >Pages</a
-                      >
-                      <ul class="dropdown-menu">
-                        <li class="nav-item">
-                          <a class="nav-link" href="tracking.html">Tracking</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="elements.html">Elements</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="contact.html">Contact</a>
-                    </li>
-                  </ul>
-                </div>
+    </div>
+  </header>
+  <!--================Header Menu Area =================-->
 
-                <div class="col-lg-5 pr-0">
-                  <ul class="nav navbar-nav navbar-right right_nav pull-right">
-                    <li class="nav-item">
-                      <a href="#" class="icons">
-                        <i class="ti-search" aria-hidden="true"></i>
-                      </a>
-                    </li>
 
-                    <li class="nav-item">
-                      <a href="#" class="icons">
-                        <i class="ti-shopping-cart"></i>
-                      </a>
-                    </li>
-
-                    <li class="nav-item">
-                      <a href="#" class="icons">
-                        <i class="ti-user" aria-hidden="true"></i>
-                      </a>
-                    </li>
-
-                    <li class="nav-item">
-                      <a href="#" class="icons">
-                        <i class="ti-heart" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </div>
-    </header>
-    <!--================Header Menu Area =================-->
 
     <!--================Home Banner Area =================-->
     <section class="banner_area">
@@ -213,7 +167,7 @@
               <p>Very us move be blessed multiply night</p>
             </div>
             <div class="page_link">
-              <a href="index.html">Home</a>
+              <a href="{% url 'frntnd:home' %}">Home</a>
               <a href="category.html">Shop</a>
               
             </div>
@@ -227,62 +181,48 @@
     <section class="cat_product_area section_gap">
       <div class="container">
         <div class="row flex-row-reverse">
-          <div class="col-lg-9">
-            <div class="product_top_bar">
-              <div class="left_dorp">
-                <select class="sorting">
-                  <option value="1">Default sorting</option>
-                  <option value="2">Default sorting 01</option>
-                  <option value="4">Default sorting 02</option>
-                </select>
-                <select class="show">
-                  <option value="1">Show 12</option>
-                  <option value="2">Show 14</option>
-                  <option value="4">Show 16</option>
-                </select>
-              </div>
-            </div>
-            {% for i in cate %}
-            <div class="latest_product_inner">
-              <div class="row">
-                <div class="col-lg-4 col-md-6">
-                  <div class="single-product">
-                    <div class="product-img">
-                      <img
-                        class="card-img"
-                        src="{% static 'Home/img/product/inspired-product/i1.jpg' %}" 
-                        alt=""
-                      />
-                      <div class="p_icon">  
-                        <a href="#">  
-                          <i class="ti-eye"></i>   
-                        </a>  
-                        <a href="#">
-                          <i class="ti-heart"></i>
-                        </a>
-                        <a href="#">
-                          <i class="ti-shopping-cart"></i>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="product-btm">
-                      <a href="#" class="d-block">
-                        <h4>Latest men’s sneaker</h4>
-                      </a>
-                      <div class="mt-3">
-                        <span class="mr-4">$25.00</span>
-                        <del>$35.00</del>
-                      </div>
-                    </div>
+
+
+          <div class="row">
+            {% for products in pro %}
+            <div class="col-lg-3 col-md-6">
+              <div class="single-product">
+                <div class="product-img">
+                  <a href="{% url 'frntnd:singleproduct' products.id %}">
+                  <img class="img-fluid w-100" src="{{products.image.url}}" alt="" /></a>
+                  <div class="p_icon">
+                    <a href="#">
+                      <i class="ti-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="ti-heart"></i>
+                    </a>
+                    <a href="">
+                      <i class="ti-shopping-cart"></i>
+                    </a>
                   </div>
                 </div>
-
-                {% endfor %}    
-
+                <div class="product-btm">
+                  <a href="#" class="d-block">
+                    <h4>{{products.product}}</h4>
+                   
+                 </a>
+                  <div class="mt-3">
+                    
+                    <span class="mr-4">$ {{products.selling_price}}</span>
+                    <del> {{products.landing_price}}</del>
+                   
+                  </div>
+                </div>
               </div>
             </div>
+            {% endfor %}
+    
           </div>
 
+              
+           
+         
           <div class="col-lg-3">
             <div class="left_sidebar_area">
               <aside class="left_widgets p_filter_widgets">
@@ -290,29 +230,18 @@
                   <h3>Browse Categories</h3>
                 </div>
                 <div class="widgets_inner">
+                  {% for i in cate %}
+                      
                   <ul class="list">
+                    
                     <li>
-                      <a href="#">Frozen Fish</a>
+                      <a href="{% url 'frntnd:category' catname=i.cname %}">womenn</a>
                     </li>
                     <li>
-                      <a href="#">Dried Fish</a>
-                    </li>
-                    <li>
-                      <a href="#">Fresh Fish</a>
-                    </li>
-                    <li>
-                      <a href="#">Meat Alternatives</a>
-                    </li>
-                    <li>
-                      <a href="#">Fresh Fish</a>
-                    </li>
-                    <li>
-                      <a href="#">Meat Alternatives</a>
-                    </li>
-                    <li>
-                      <a href="#">Meat</a>
+                      <a href="{% url 'frntnd:category' catname=i.cname %}">Men</a>
                     </li>
                   </ul>
+                  {% endfor %}
                 </div>
               </aside>
 

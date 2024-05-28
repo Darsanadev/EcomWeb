@@ -84,7 +84,7 @@
                     <a class="nav-link" href="{% url 'frntnd:home' %}">Home</a>
                   </li>
                   <li class="nav-item submenu dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                       aria-expanded="false">Shop</a>
                     <ul class="dropdown-menu">
                      
@@ -101,7 +101,7 @@
                   </li>
                   <!-- category dropdown -->
                    <li class="nav-item submenu dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"  aria-haspopup="true"
                       aria-expanded="false">Category</a>
                     <ul class="dropdown-menu">
 
@@ -113,7 +113,7 @@
                   </li>
                   <!-- brand dropdown -->
                   <li class="nav-item submenu dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"  aria-haspopup="true"
                       aria-expanded="false">Brand</a>
                     <ul class="dropdown-menu">
 
@@ -180,7 +180,7 @@
       <div class="row justify-content-center">
         <div class="col-lg-12">
           <div class="main_title">
-            <h2><span></span></h2>
+           
             <p></p>
           </div>
         </div>
@@ -191,7 +191,7 @@
         <div class="col-lg-3 col-md-6">
           <div class="single-product">
             <div class="product-img">
-              <a href="{% url 'frntnd:singleproduct' %}">
+              <a href="{% url 'frntnd:singleproduct' products.id %}">
               <img class="img-fluid w-100" src="{{products.image.url}}" alt="" /></a>
               <div class="p_icon">
                 <a href="#">
@@ -200,7 +200,7 @@
                 <a href="#">
                   <i class="ti-heart"></i>
                 </a>
-                <a href="#">
+                <a href="">
                   <i class="ti-shopping-cart"></i>
                 </a>
               </div>
@@ -208,7 +208,7 @@
             <div class="product-btm">
               <a href="#" class="d-block">
                 <h4>{{products.product}}</h4>
-                <!-- <p>{{products.description}}</p> -->
+               
              </a>
               <div class="mt-3">
                 

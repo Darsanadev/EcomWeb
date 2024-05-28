@@ -21,6 +21,8 @@ urlpatterns = [
     path('branddelete/<int:id>/', views.branddelete, name='branddelete'),
 
     path('userdata/', views.userdata, name='userdata'),
+    path('user/', views.user, name='user'),
+   
    
 
 ]

@@ -14,9 +14,9 @@
         <input type="text" name="cname" placeholder="name"><br><br>
         <input type="text" name="description" placeholder="Description"><br><br>
         <select name="is_listed" id="is_listed">
-            <option value="True">List</option>
-            <option value="False">Unlist</option>
-        </select><br><br>
+            <option value="True" class="list">List</option>
+            <option value="False" class="unlist">Unlist</option>
+        </select><br><br> 
         <input type="file" name="image"><br><br>
         <button type="submit">REGISTER</button>
 
@@ -51,6 +51,28 @@
         {% endfor %}
     {% endif %}
 
+    <!--  ajvaScript to change list and Unlist  -->
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var toggleButton = document.getElementById("toggleButton");
+            var isListedInput = document.getElementById("is_listed");
+
+            toggleButton.addEventListener("click", function() {
+                if (isListedInput.value === "True") {
+                    isListedInput.value = "False";
+                    toggleButton.textContent = "Unlist";
+                } else {
+                    isListedInput.value = "True";
+                    toggleButton.textContent = "List";
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
 {% endblock %}
+
+ 

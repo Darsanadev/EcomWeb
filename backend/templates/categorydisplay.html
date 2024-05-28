@@ -15,7 +15,7 @@
                   <table class="table table-striped project-orders-table">
                     <thead>
                       <tr>
-                       
+                        
                         <th>Category</th>
                         <th>Description</th>
                         <th>Show / Naah</th>
@@ -31,15 +31,17 @@
                         <td>{{i.is_listed}}</td>
                         <td>
                           
-                            <img src="{{i.image.url}}" alt="image"  width="100px" height="100px">
+                            <img src="{{i.image.url}}" alt=""  width="100px" height="100px">
                         </td>
                         <td>
                           <a href="">
-                            <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
-                              <span>List</span> <span style="display: none;">Un List</span>               
-                            </button> 
-                            
+                            <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3 " id="toggleButton">
+                              <span id="is_listedtext" class="list-text">List</span>
+                              <span>Un List</span>
+                            </button>
                           </a>
+
+                          
                             <a href="">
                                 <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
                                     Edit
@@ -47,7 +49,7 @@
                                 </button> 
                             </a>
                             
-                            <!-- <a href="/{{i.id}}"> -->
+                        
                             <a href="categorydelete/{{i.id}}">
                                 <button type="button" class="btn btn-danger btn-sm btn-icon-text">
                                     Delete
@@ -64,6 +66,52 @@
             </div>
           </div>
         </div>
+
+
+  <!--  javascript using list and Unlist  -->
+
+    <!-- JavaScript for toggle button functionality -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+            var toggleButton = document.getElementById("toggleButton");
+            var isListedInput = document.getElementById("is_listedtext");
+
+            toggleButton.addEventListener("click", function() {
+                if (isListedInput.value === "True") {
+                    isListedInput.value = "False";
+                    toggleButton.textContent = "Unlist";
+                } else {
+                    isListedInput.value = "True";
+                    toggleButton.textContent = "List";
+                }
+            });
+        });
+
+
+
+      // document.addEventListener('DOMContentLoaded', function() {
+      //     var toggleButtons = document.querySelectorAll('.list-toggle-btn');
+          
+      //     toggleButtons.forEach(function(button) {
+      //         button.addEventListener('click', function() {
+      //             var listText = button.querySelector('.list-text');
+      //             var unlistText = button.querySelector('.unlist-text');
+                  
+      //             if (listText.style.display === 'none') {
+                      
+      //                 unlistText.style.display = 'block';
+      //             } else {
+      //                 listText.style.display = 'block';
+      //                 unlistText.style.display = 'none';
+      //             }
+      //         });
+      //     });
+      // });
+  </script>
+
+
+
+
 </body>
 </html>
 {% endblock %}
