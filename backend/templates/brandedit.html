@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% extends 'index.html' %}
+{% block contend %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">     
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">     
+    <title>Document</title>    
+</head>    
+<body style="text-align: center;">    
+    <form action="" method="post" enctype="multipart/form-data" style="text-align: center; margin-left: 10%;">
+        {% csrf_token %}   
+        <h1>BrAnd DeTaIL eDiT KaROoo...</h1>
+        <input type="text" name="brand" value="{{bran.brand}}" placeholder="brand"><br><br>
+        <input type="text" name="description" value="{{bran.description}}" placeholder="Description"><br><br>
+        <select name="is_listed" value="{{bran.is_listed}}" id="is_listed">
+            <option value="True">List</option>
+            <option value="False">Unlist</option>
+        </select><br><br>
+        <button type="submit">REGISTER</button>
+    </form>
+    
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,53 @@
+<!DOCTYPE html> 
+{% extends 'index.html' %}
+{% block contend %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="text-align: center;">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <h1>PRODUCT DETAIL</h1>
+
+
+        <select name="category" id="category" placeholder="category">
+            <option value="" disabled selected >Select Category</option>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}">{{ cat.cname }}</option>
+            {% endfor %}
+        </select><br><br>
+
+
+        <select name="brand" id="brand">
+            <option value="" disabled selected >Select Brand</option> 
+            {% for brands in brands %}
+                <option value="{{ brands.id }}"> {{ brands.brand }}</option>
+            {% endfor %}
+        </select><br><br>
+    
+        <input type="text" name="product" value="{{product}}" placeholder="product"><br><br>
+        <input type="text" name="size" value="{{size}}" placeholder="Size"><br><br>
+        <input type="text" name="landing_price" value="{{landing_price}}" placeholder="landing_price"><br><br>
+        <input type="text" name="selling_price" value="{{selling_price}}" placeholder="selling_price"><br><br>
+        <input type="text" name="description" value="{{description}}" placeholder="Description"><br><br>
+        <input type="file" name="image" value="{{image.url}}"><br><br>
+        <input type="file" name="image1"><br><br>
+        <input type="file" name="image2"><br><br>
+        <input type="file" name="image3"><br><br>
+
+
+        <select name="is_listed" id="is_listed">
+            <option value="True">List</option>
+            <option value="False">Unlist</option>
+        </select><br><br>
+        
+        <button type="submit">UpDatE</button>
+    </form>
+    
+</body>
+</html>
+{% endblock %}

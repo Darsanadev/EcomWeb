@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from .models import  Category, Brand, Product
-from frntnd.models import Account
+from frntnd.models import Useraccount
 
 # Create your views here.           
 
 def index(request):
     return render(request, 'index.html') 
+
 
 # views of category 
 
@@ -17,25 +18,37 @@ def categorydata(request):
         is_listed = request.POST.get('is_listed')  
         cate = Category(cname=cname, description=description, image=image, is_listed=is_listed)
         cate.save()
-        if is_listed:
-            message = f"Category '{cname}' is listed."
-        else:
-            message = f"Category '{cname}' is not listed."
-        return HttpResponse(message)  # Simple response displaying the message
+        return render(request, 'categorydata.html')
+        # if is_listed:
+        #     message = f"Category '{cname}' is listed."
+        # else:
+        #     message = f"Category '{cname}' is not listed."
+        # return HttpResponse(message)  # Simple response displaying the message
     return render(request, 'categorydata.html')  
         
 def categorydisplay(request):
     cate = Category.objects.all()
     return render(request, 'categorydisplay.html', {'cate': cate})
 
-def categoryedit(request, id):
-   
-    return render
+def categoryedit(request, id): 
+    categ = Category.objects.get(id=id)
+    if request.method == 'POST':
+        cname = request.POST.get('cname')
+        description = request.POST.get('description')
+        image = request.FILES['image']
+
+        categ.cname = cname
+        categ.description = description
+        categ.image = image
+        categ.save()
+        return redirect('categorydelete')
+    return render(request, 'categoryedit.html', {'categ': categ})
 
 def categorydelete(id):
     cate = Category.objects.get(id=id)
     cate.delete()
     return redirect('categorydisplay')
+
 
 # views of brands
 
@@ -56,9 +69,28 @@ def branddisplay(request):
     return render(request, 'branddisplay.html', {'brand': brand})
 
 def branddelete(id):
-    brand = Brand.objects.get(id=id)
-    brand.delete()
-    return redirect(branddisplay)
+    try:
+        brand = get_object_or_404(Brand, id=id)
+        # brand = Brand.objects.get(id=id)
+        brand.delete()
+        return redirect('branddisplay')
+    except Brand.DoesNotExist:
+        return HttpResponse("Brand not found", status=404)
+
+def brandedit(request, id):
+    bran = Brand.objects.get(id=id)
+    if request.method == 'POST':
+        brand = request.POST.get('brand')
+        description = request.POST.get('description')
+        is_listed = request.POST.get('is_listed')
+
+        bran.brand = brand
+        bran.description = description
+        bran.is_listed = is_listed
+        bran.save()
+        return redirect('branddisplay')
+    return render(request, 'brandedit.html', {'bran': bran})    
+
 
 # views of Products
 
@@ -100,16 +132,6 @@ def prodisplay(request):
     brand = Brand.objects.all()
     return render(request, 'prodisplay.html', {'pro': pro, 'cate': cate, 'brand': brand})
 
-# views of user 
-
-def user(request):
-    acc = Account.objects.all()
-    return render(request, 'user.html', {'acc': acc})
-
-
-def userdata(request):
-    return render(request, 'userdata.html')
-
 
 def proedit():
     return redirect('prodisplay')
@@ -117,3 +139,15 @@ def proedit():
 
 def prodelete():
     return redirect('prodisplay')
+
+
+# views of user 
+
+def user(request):
+    acc = Useraccount.objects.all()
+    return render(request, 'user.html', {'acc': acc})
+
+
+def userdata(request):
+    return render(request, 'userdata.html')
+

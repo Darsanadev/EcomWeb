@@ -1,7 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from backend . models import Category, Brand, Product
-from frntnd . models import Account, Cart, Login
+from frntnd . models import Useraccount, Cart, Register
 from django.contrib import messages
+from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.utils import timezone
+import random
+import smtplib
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+
 
 # Create your views here.  
 
@@ -9,7 +17,7 @@ def home(request):
     cate = Category.objects.all()
     brand = Brand.objects.all()
     pro = Product.objects.all()
-    register = Login.objects.all()
+    register = Register.objects.all()
     return render(request, 'home.html', {'cate': cate, 'brand': brand, 'pro': pro, 'register':register})
 
 
@@ -58,13 +66,13 @@ def account(request):
         city = request.POST.get('city')
         address = request.POST.get('address')
         pin = request.POST.get('pin')
-        account = Account(name=name, phone=phone, state=state, city=city, address=address, pin=pin)
+        account = Useraccount(name=name, phone=phone, state=state, city=city, address=address, pin=pin)
         account.save()
-    accounts = Account.objects.all()
+    accounts = Useraccount.objects.all()
     return render(request, 'account.html', {'accounts': accounts})
 
-def edi_accout(request):
-    acc = Account.objects.all()
+def editaccout(request):
+    acc = Useraccount.objects.all()
     if request.method == 'POST':
         name = request.POST.get('name')
         phone = request.POST.get('phone')
@@ -73,21 +81,21 @@ def edi_accout(request):
         address = request.POST.get('address')
         pin = request.POST.get('pin')
 
-        acc.name=name
-        acc.phone=phone
-        acc.state=state
-        acc.city=city
-        acc.address=address
-        acc.pin=pin
+        acc.name = name
+        acc.phone = phone
+        acc.state = state
+        acc.city = city
+        acc.address = address
+        acc.pin = pin
         acc.save()
         return redirect('account')
+    return render(request, 'account.html', {'acc': acc})
 
-    return render(request, 'account.html', {'acc':acc})
 
-def deleteaccount(id):
-    accound = Account.objects.get(id=id)
+def deleteaccount(request, id):
+    accound = Useraccount.objects.get(id=id)
     accound.delete()
-    return redirect('account')
+    return render(request, 'account.html')
 
 
 def cartdata(request):
@@ -101,11 +109,9 @@ def cartdata(request):
         total = request.POST.get('total')
         cartt = Cart(image=image, user=user, orderdate=orderdate, product=product, quantity=quantity, price=price, total=total)
         cartt.save()
-        return redirect(cart)
-        
+        return redirect(cart)    
     return render(request, 'cartdata.html')
     
-
 
 def cart(request, id):
     product = Product.objects.get(id=id)
@@ -132,23 +138,101 @@ def contact(request):
 def whishlist(request):
     return render(request, 'whishlist.html')
 
-def login(request):
+#  Login views  
+
+def register(request):
     if request.method == 'POST':
         uname = request.POST.get('username')
         email = request.POST.get('email')
         passwrd = request.POST.get('password')
-        register = Login(username=uname, password=passwrd, email=email)
+        register = Register(username=uname, password=passwrd, email=email)
         register.save()
-        if Login.objects.filter(username=uname, password=passwrd).exists():
-            request.session['username']=uname
-            request.session['password']=passwrd
-            return render(request, 'home.html')
+    return render(request, 'product.html')
+
+
+def login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        passwrd = request.POST.get('password')
+
+        if Register.objects.filter(email=email, password=passwrd).exists():
+            request.session['email']=email 
+            request.session['password']=passwrd 
+            return redirect(home) 
         else:
-            message="Your username and password doesn't match :( "
+            message = "Your username and password doesn't match :("
             return render(request, 'login.html', {'message': message}) 
     return render(request, 'login.html') 
 
+
 def logout(request):
     username=request.session['username']
+    del request.session['password']
     username.delete()
     return render(request, 'home.html', {'username': username})
+
+
+#  OTP views
+
+
+
+def simple_mail(request):
+    send_mail(
+        subject='OTP for login',
+        message='otp sender',
+        from_email="darshuuu11@gmail.com",
+        recipient_list=['darshuuu11@gmail.com'])
+    return HttpResponse("otp messageee")
+
+
+def otpgenerate(request):
+    if request.method == 'POST':
+       mailid = request.POST.get('email')
+
+    
+    # Validate the email
+    try:
+        validate_email(mailid)
+        valid_email = True
+    except ValidationError:
+        valid_email = False
+        
+
+        otp = random.randint(100000, 999999)
+        print("otp code is", otp)
+        request.session['otp_code'] = otp
+        request.session['created_at'] = timezone() 
+        request.session['email'] = mailid   
+
+
+#  send otp in mail 
+        send_mail(
+            subject='otp for Login ',
+            message=f'Your otp {otp}',
+            from_email="darshuuu11@gmail.com",
+            recipient_list=['darshuuu11@gmail.com'])
+        return redirect('home')
+    return render(request,'otpgenerate.html')
+
+
+
+
+def otpvalidate(request):
+    if request.method == 'POST':
+        input_otp = request.POST.get('otp')
+        stored_otp = request.session.get('otp')
+        otp_timestamp = request.session.get('otp_timestamp')
+        current_timestamp = timezone.now().timestamp()
+
+         # Set OTP validity period to 15 seconds
+        otp_validity_period = 15  # 15 seconds
+
+        if stored_otp and otp_timestamp and (current_timestamp - otp_timestamp) <= otp_validity_period:
+            if str(input_otp) == str(stored_otp):
+                return HttpResponse("OTP is valid")
+            else:
+                return HttpResponse("Invalid OTP")
+        else:
+            return HttpResponse("OTP has expired or is invalid")
+        
+        

@@ -8,16 +8,16 @@
     <title>Document</title>
 </head>
 <body style="text-align: center;">
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data" style="margin-left: 10%;">
         {% csrf_token %}
         <h1> EDit CATEGORY</h1>
-        <input type="text" name="cname" placeholder="name" value="{{cname}}"><br><br>
-        <input type="text" name="description" placeholder="Description" value="{{description}}"><br><br>
+        <input type="text" name="cname" placeholder="namehh" value="{{categ.cname}}"><br><br>
+        <input type="text" name="description" placeholder="Description" value="{{categ.description}}"><br><br>
+        <input type="file" name="image" value="{{image.url}}"><br><br>
         <select name="is_listed" id="is_listed">
             <option value="True">List</option>
             <option value="False">Unlist</option>
         </select><br><br>
-        <input type="file" name="image" value="{{image.url}}"><br><br>
         <button type="submit">UPdatE</button>
     </form>
 </body>

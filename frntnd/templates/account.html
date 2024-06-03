@@ -179,24 +179,25 @@
                     <h5 id="acccity">{{account.city}}, {{account.state}}</h5>
                     <h5 id="accpin">{{account.pin}}</h5><br>
                     <h5 id="accphone">{{account.phone}}</h5>
-                
-           
-                <button class="edtbtn" onclick="editshow()">Edit</button>
-                <a href="removecart/{{account.id}}"><button onclick="deleteaccount(event)" id="deleteaccc" class="edtbtn">Delete</button></a>
+
+                    <a href="#"><button id="editacc" class="edtbtn" onclick="">Edit Karoo</button></a>
+              
+                <a href="deleteaccount/{{account.id}}"><button onclick="deleteaccount(event)" id="deleteaccc" class="edtbtn">Delete</button></a>
                 {% endfor %}
               </div>
+              <div class="addnew">
+                <button class="add" onclick="Show()">Add New address</button>
+            </div>
           </div><br><br>
             
         </div>
-        <div class="addnew">
-            <button class="add" onclick="Show()">Add New address</button>
-        </div>
+        
        
        <!-- my acoount nte style -->
 
         <style>
             .content{
-                width: 23em;
+                width: 28em;
                 height: 20rem;
                 margin-left: 130px;
                 padding: 20px;
@@ -204,8 +205,8 @@
                 background-color: rgb(249, 249, 249);
             }
             .add{
-                margin-left: 150px;
-                margin-top: 30px;
+                
+                
                 width: 250px;
                 height: 40px;
                 border: none;
@@ -236,6 +237,7 @@
               width: 23em;
                 height: 20rem;
                 margin-left: 130px;
+                border: none;
               
             }
 
@@ -243,17 +245,17 @@
 
     </div>
     <div class="editarea">
-        <div class="editpopup" style="display: none;">
+        <div class="editpopup" id="editshowacc" style="display: none;">
             <h1>Edit address</h1>
             <form action="{% url 'frntnd:account' %}" method="post", enctype="multipart/form-data">
                 {% csrf_token %}
                 
-                <input type="text" name="name" value="{{ acc.name }}" placeholder="Name" class="colm" required><br><br>
-                <input type="number" name="phone" value="{{ acc.phone }}" placeholder="Phone" class="colm" required><br><br>
-                <input type="text" name="state" value="{{ acc.state }}" placeholder="state" required class="colmm">
-                <input type="text" name="city" value="{{ acc.city }}" placeholder="city" required class="colmm"><br><br>
-                <textarea name="address" placeholder="Address" class="colm" required>{{ acc.address }}</textarea><br><br>
-                <input type="number" name="pin" value="{{ acc.pin }}" placeholder="pin" class="colmm" required><br><br>
+                <input type="text" name="name" value="{{acc.name}}" placeholder="Name" class="colm" required><br><br>
+                <input type="number" name="phone" value="{{acc.phone}}" placeholder="Phone" class="colm" required><br><br>
+                <input type="text" name="state" value="{{ acc.state}}" placeholder="state" required class="colmm">
+                <input type="text" name="city" value="{{acc.city}}" placeholder="city" required class="colmm"><br><br>
+                <textarea name="address" placeholder="Address" class="colm" required>{{acc.address}}</textarea><br><br>
+                <input type="number" name="pin" value="{{acc.pin}}" placeholder="pin" class="colmm" required><br><br>
                 <button class="savebtn" onclick="savepopup">Save Address</button>
                 
             </form>
@@ -334,8 +336,18 @@
         outline: none;
     }
 </style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $("#editacc").click(function(){
+      $("#editshowacc").show()
+    })
+
+  })
 
 
+</script>
+   
 
   <!-- javaScript  -->
 
@@ -361,7 +373,7 @@
     var savebtn = document.querySelector(".savebtn")
 
     savebtn.addEventListener("click", function(event){
-    event.preventDefault()   // preventDefault() koduthal automatic
+    event.preventDefault()   // preventDefault() koduthal automatic stop avmm
     
     })
 
@@ -417,13 +429,14 @@
 
 
 
-
+<p>bvgfg</p>
+<p>vhguh</p>
 
 
 
 
   <!--================ start footer Area  =================-->
-  <footer class="footer-area section_gap" style="margin-top: 200px;">
+  <footer class="footer-area section_gap" >
     <div class="container">
       <div class="row">
         <div class="col-lg-2 col-md-6 single-footer-widget">
@@ -482,6 +495,15 @@
       </div>
     </div>
   </footer>
+
+
+
+
+
+
+
+
+  
   <!--================ End footer Area  =================-->
 
   <!-- Optional JavaScript -->
@@ -501,5 +523,4 @@
   <script src="{% static 'Home/js/mail-script.js' %}"></script>
   <script src="{% static 'Home/js/theme.js' %}"></script>
 </body>
-
 </html>
