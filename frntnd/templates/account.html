@@ -43,7 +43,7 @@
               <ul class="right_side">
                 
                 <li>
-                  <a href="{% url 'frntnd:account' %}">MY Account</a>
+                  <a href="{% url 'frntnd:home' %}">Home</a>
                 </li>
                 <li>
                   <a href="{% url 'frntnd:whishlist' %}">whishlist</a>
@@ -60,111 +60,8 @@
         </div>
       </div>
     </div>
-    <div class="main_menu">
-      <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light w-100">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <a class="navbar-brand logo_h" href="index.html">
-            <img src="img/logo.png" alt="" />
-          </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <!-- Collect the nav links, forms, and other content for toggling -->
-        
-          <div class="collapse navbar-collapse offset w-100" id="navbarSupportedContent">
-            <div class="row w-100 mr-0">
-              
-              <div class="col-lg-7 pr-0">
-                <ul class="nav navbar-nav center_nav pull-right">
-                  <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'frntnd:home' %}">Home</a>
-                  </li>
-                  <li class="nav-item submenu dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="false">Shop</a>
-                    <ul class="dropdown-menu">
-                     
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frntnd:home' %}">Product Details</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frntnd:home' %}">Product Checkout</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frntnd:home' %}">Shopping Cart</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <!-- category dropdown -->
-                   <li class="nav-item submenu dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="false">Category</a>
-                    <ul class="dropdown-menu">
+    
 
-                      {% for i in cate %}
-                      <li class="nav-item"><a class="nav-link" href="{% url 'frntnd:category' catname=i.cname %}">{{i.cname}}</a></li>
-                      {% endfor %}
-
-                    </ul>
-                  </li>
-                  <!-- brand dropdown -->
-                  <li class="nav-item submenu dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="false">Brand</a>
-                    <ul class="dropdown-menu">
-
-                      {% for brands in brand %}
-                      <li class="nav-item"><a class="nav-link" href="">{{brands.brand}}</a></li>
-                      {% endfor %}
-
-                    </ul>
-                  </li>
-                 
-                  <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Products</a>
-                  </li>
-                  <div style="margin-right: -107px;">
-                  <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Register / Login</a>
-                  </li>
-                  </div>
-                </ul>
-              </div>
-            
-              <div class="col-lg-5 pr-0">
-                <ul class="nav navbar-nav navbar-right right_nav pull-right">
-                  <li class="nav-item">
-                    <a href="#" class="icons"><i class="ti-search" aria-hidden="true"></i></a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a href="#" class="icons">
-                      <i class="ti-shopping-cart"></i>
-                    </a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a href="#" class="icons">
-                      <i class="ti-user" aria-hidden="true"></i>
-                    </a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a href="#" class="icons">
-                      <i class="ti-heart" aria-hidden="true"></i>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </div>
   </header>
   <!--================Header Menu Area =================-->
 
@@ -180,16 +77,15 @@
                     <h5 id="accpin">{{account.pin}}</h5><br>
                     <h5 id="accphone">{{account.phone}}</h5>
 
-                    <a href="#"><button id="editacc" class="edtbtn" onclick="">Edit Karoo</button></a>
+                    <a href="editaccnt/{{account.id}}"><button  class="edtbtn" onclick="">Edit Karoo</button></a>
               
                 <a href="deleteaccount/{{account.id}}"><button onclick="deleteaccount(event)" id="deleteaccc" class="edtbtn">Delete</button></a>
                 {% endfor %}
               </div>
-              <div class="addnew">
+              <!-- <div class="addnew">
                 <button class="add" onclick="Show()">Add New address</button>
-            </div>
+            </div> -->
           </div><br><br>
-            
         </div>
         
        
@@ -201,12 +97,10 @@
                 height: 20rem;
                 margin-left: 130px;
                 padding: 20px;
-                
                 background-color: rgb(249, 249, 249);
             }
             .add{
-                
-                
+              
                 width: 250px;
                 height: 40px;
                 border: none;
@@ -244,25 +138,9 @@
         </style>
 
     </div>
-    <div class="editarea">
-        <div class="editpopup" id="editshowacc" style="display: none;">
-            <h1>Edit address</h1>
-            <form action="{% url 'frntnd:account' %}" method="post", enctype="multipart/form-data">
-                {% csrf_token %}
-                
-                <input type="text" name="name" value="{{acc.name}}" placeholder="Name" class="colm" required><br><br>
-                <input type="number" name="phone" value="{{acc.phone}}" placeholder="Phone" class="colm" required><br><br>
-                <input type="text" name="state" value="{{ acc.state}}" placeholder="state" required class="colmm">
-                <input type="text" name="city" value="{{acc.city}}" placeholder="city" required class="colmm"><br><br>
-                <textarea name="address" placeholder="Address" class="colm" required>{{acc.address}}</textarea><br><br>
-                <input type="number" name="pin" value="{{acc.pin}}" placeholder="pin" class="colmm" required><br><br>
-                <button class="savebtn" onclick="savepopup">Save Address</button>
-                
-            </form>
-        </div>
-    </div>
+    
     <div class="addnew">
-        <div class="addnewpopup" style="display: none; ">
+        <div class="addnewpopup" style="display: block; ">
             <h1>Add new address</h1>
             <form action="" method="post", enctype="multipart/form-data">
                 {% csrf_token %}
@@ -272,17 +150,10 @@
                 <input type="text" name="city" value="{{ acc.city }}" placeholder="city" required class="colmm"><br><br>
                 <textarea name="address" placeholder="Address" class="colm" required>{{ acc.address }}</textarea><br><br>
                 <input type="number" name="pin" value="{{ acc.pin }}" placeholder="pin" class="colmm" required><br><br>
-                <button class="savebtn" onclick="savepopup">Save Address</button>
+                <button class="savebtn" onclick="savebtn" >Save address</button>
+         
                 
-<!-- 
 
-                <input type="text" name="" placeholder="Name" class="colm" required><br><br>
-                <input type="number" name="" placeholder="Phone" class="colm" required><br><br>
-                <input type="text" name="" placeholder="state" class="colmm">
-                <input type="text" placeholder="city" class="colmm"><br><br>
-                <textarea name="" placeholder="Address" class="colm" required></textarea><br><br>
-                <input type="number" name="" placeholder="pin" class="colmm"><br><br>
-                <button class="savebtn" onclick="savepopup">Save Address</button> -->
             </form>
         </div>
     </div>
@@ -295,18 +166,19 @@
         margin-left: 150px;
     }
     .addnewpopup{
-        margin-left: 150px;
+        margin-left: 50%;
     }
     .colm{
         width: 350px;
         height: 45px;
-        border-color: darkcyan;
+        border-color: rgb(137, 201, 201);
     }
 
     .colmm{
         width: 170px;
         height: 38px;
-        border-color: rgb(139, 0, 102);
+        border-color: rgb(137, 201, 201);
+       
     }
     .savebtn{
         width: 150px;
@@ -362,12 +234,12 @@
     }
 
     // Edit popup show
-    var editpopup = document.querySelector(".editpopup")
-    function editshow(){
-      event.preventDefault()
-        editpopup.style.display="block"
+    // var editpopup = document.querySelector(".editpopup")
+    // function editshow(){
+    //   event.preventDefault()
+    //     editpopup.style.display="block"
 
-    }
+    // }
 
     // 
     var savebtn = document.querySelector(".savebtn")
@@ -377,34 +249,7 @@
     
     })
 
-    // select all inputs disly avndaa inputs
-
-    var content = document.getElementById("content")
-    var savepopup = document.getElementById("savepopup")
-    var accname = document.getElementById("accname")
-    var accaddress = document.getElementById("accaddress")
-    var acccity = document.getElementById("acccity")
-    var accstate = document.getElementById("accstate")
-    var accpin = document.getElementById("accpin")
-    var accphone = document.getElementById("accphone")
-    var deleteaccc = document.getElementById("deleteaccc")
-
-    savepopup.addEventListener("click", function(event){
-        event.preventDefault()
-        var div=document.createAttribute("div")
-
-        div.setAttribute("class", "content")
-        div.innerHTML=`<h3>${accname.value}</h3>
-        <h5>${accaddress.value}</h5>
-        <h5>${acccity.value}</h5>
-        <h5>${accstate.value}</h5>
-        <h5>${accpin.value}</h5>
-        <h5>${accphone.value}</h5>
-        <button>Edit</button>
-        <button onclick="deleteaccount(event)">Delete</button>`
-        content.append(div)
-
-        
+  
 // select Remove 
 
           function deleteaccount(event){
@@ -412,90 +257,11 @@
             event.target.parentElement.remove()
           }
 
-    })
-
-
-    // Save address delete popup
-    // function deletepopup(){
-    //     editpopup.style.display="none"
-    //     editshow.style.display="none"
-    // }
-
+          function savebtn(event){
+            event.preventDefault()
+          }
 
 </script>
-
-
-
-
-
-
-<p>bvgfg</p>
-<p>vhguh</p>
-
-
-
-
-  <!--================ start footer Area  =================-->
-  <footer class="footer-area section_gap" >
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-2 col-md-6 single-footer-widget">
-          <h4>Top Products</h4>
-          <ul>
-            <li><a href="#">Managed Website</a></li>
-            <li><a href="#">Manage Reputation</a></li>
-            <li><a href="#">Power Tools</a></li>
-            <li><a href="#">Marketing Service</a></li>
-          </ul>
-        </div>
-         
-        <div class="col-lg-2 col-md-6 single-footer-widget">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Our Services</a></li>
-            <li><a href="#">Terms of Service</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-2 col-md-6 single-footer-widget">
-          <h4>Features</h4>
-          <ul>
-            <li><a href="#">Jobs</a></li>
-            <li><a href="#">Brand Assets</a></li>
-            <li><a href="#">Investor Relations</a></li>
-            <li><a href="#">Terms of Service</a></li>
-          </ul>
-        </div> 
-        <div class="col-lg-2 col-md-6 single-footer-widget">
-          <h4>Address</h4>
-          <ul>
-            <li><a href="#">Palakkad, Kerala</a></li>
-            <li>+91 8943115523</li>
-            <li>Shopzie@gmail.com</a></li>
-            
-          </ul>
-        </div>
-        <div class="col-lg-4 col-md-6 single-footer-widget">
-          
-        </div>
-      </div>
-      <div class="footer-bottom row align-items-center">
-        
-        <p class="footer-text m-0 col-lg-8 col-md-12"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-<!-- Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> -->
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-        <div class="col-lg-4 col-md-12 footer-social">
-          <a href="#"><i class="fa fa-facebook"></i></a>
-          <a href="#"><i class="fa fa-twitter"></i></a>
-          <a href="#"><i class="fa fa-dribbble"></i></a>
-          <a href="#"><i class="fa fa-behance"></i></a>
-        </div>
-      </div>
-      </div>
-    </div>
-  </footer>
-
 
 
 

@@ -1,10 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>OTP Generated</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
+
 <body>
-    <h2>OTP Generated Successfully</h2>
-    <p>Your OTP is: {{ otp }}</p>
+    <h1 style="text-align: center;">Login with OTP</h1>
+    <form action="" method="POST" name="" enctype="multipart/form-data" style="text-align: center;" >
+        {% csrf_token %}
+        <p  style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">We emailed you a 6 character code for verification on your registered email-id.<br>Enter the code to confirm the email.</p><br>
+        <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Enter the OTP : <input type="text" name="inpotp" id="inpotp" ></p><br>
+        <a href="" onclick="stuck()"><button>Resend OTP</button></a>
+        <button type="submit">verify OTP</button> 
+    </form>
+
+    <script>
+        function stuck(){   
+        event.preventDefault()
+        }
+    </script>
 </body>
 </html>
+

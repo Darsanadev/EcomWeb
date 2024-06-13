@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body style="overflow-y: scroll; overflow-x: scroll;">
         <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -15,7 +15,6 @@
                   <table class="table table-striped project-orders-table">
                     <thead>
                       <tr>
-                        
                         <th>Category</th>
                         <th>Brand</th>
                         <th>Product</th>
@@ -31,6 +30,7 @@
                       
                     {% for products in pro %}
                     <tr>
+                  
                         <td>{{products.category.cname}}</td>
                         <td>{{products.brand.brand}}</td>
                         <td>{{products.product}}</td>
@@ -41,17 +41,29 @@
                         <td>
                             <img src="{{products.image.url}}" alt=""  width="100px" height="100px">
                         </td>
+                      
                         <td>{{products.is_listed}}</td>
 
                         <td>
-                            <a href="">
+
+                          {% if products.is_listed %}
+                          <a href="{% url 'backend:pro_list' i.id %}">
+                            <button type="button"  class="btn btn-success btn-sm btn-icon-text mr-3" >List</button>
+                          </a>
+                          {% else %}
+                          <a href="{% url 'backend:pro_list' i.id %}">
+                            <button type="button" class="btn btn-danger btn-sm btn-icon-text" >Unlist</button>
+                          </a>
+                          {% endif%}
+
+
+                            <a href="proedit/{{products.id}}">
                                 <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
                                     Edit
                                     <i class="typcn typcn-edit btn-icon-append"></i>                          
                                 </button> 
                             </a>
-                            
-                            <!-- <a href="/{{i.id}}"> -->
+                          
                             <a href="prodelete/{{products.id}}">
                                 <button type="button" class="btn btn-danger btn-sm btn-icon-text">
                                     Delete
@@ -60,8 +72,9 @@
                             </a>
                         </td>
                     </tr>
+                    {% endif %}
+                      
                     {% endfor %}
-                    
                     </tbody>
                 </table>
               </div>

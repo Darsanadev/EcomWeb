@@ -2,10 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from backend . models import Category, Brand, Product
 from frntnd . models import Useraccount, Cart, Register
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core.mail import send_mail
-from django.utils import timezone
 import random
+from datetime import datetime, timedelta
 import smtplib
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
@@ -48,13 +48,11 @@ def singleproduct(request, id):
     cate = Category.objects.all()
     brand = Brand.objects.all()
     pro = Product.objects.filter(id=id) 
-     
     return render(request, 'singleproduct.html', {'cate': cate, 'brand': brand, 'pro': pro})
 
 # Change Employee.objects.get(id=id) to Employee.objects.filter(id=id)
 
 # "filter() will always give you a QuerySet" - it's iterable
-
 # get() - return single object and it's not iterable
 
 
@@ -71,8 +69,14 @@ def account(request):
     accounts = Useraccount.objects.all()
     return render(request, 'account.html', {'accounts': accounts})
 
-def editaccout(request):
+
+def accountedit(request):
     acc = Useraccount.objects.all()
+    return render(request, 'account.html', {'acc': acc})
+
+
+def editaccnt(request, id):
+    acc = Useraccount.objects.get(id=id)
     if request.method == 'POST':
         name = request.POST.get('name')
         phone = request.POST.get('phone')
@@ -89,7 +93,7 @@ def editaccout(request):
         acc.pin = pin
         acc.save()
         return redirect('account')
-    return render(request, 'account.html', {'acc': acc})
+    return render(request, 'editaccnt.html', {'acc': acc})
 
 
 def deleteaccount(request, id):
@@ -108,11 +112,11 @@ def cartdata(request):
         price = request.POST.get('price')
         total = request.POST.get('total')
         cartt = Cart(image=image, user=user, orderdate=orderdate, product=product, quantity=quantity, price=price, total=total)
-        cartt.save()
+        cartt.save() 
         return redirect(cart)    
-    return render(request, 'cartdata.html')
+    return render(request, 'cartdata.html')     
     
-
+    
 def cart(request, id):
     product = Product.objects.get(id=id)
     category = Category.objects.all()
@@ -138,7 +142,8 @@ def contact(request):
 def whishlist(request):
     return render(request, 'whishlist.html')
 
-#  Login views  
+# Login views  
+
 
 def register(request):
     if request.method == 'POST':
@@ -147,92 +152,150 @@ def register(request):
         passwrd = request.POST.get('password')
         register = Register(username=uname, password=passwrd, email=email)
         register.save()
-    return render(request, 'product.html')
+    return render(request, 'register.html')
 
 
-def login(request):
+def userlogin(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
-        passwrd = request.POST.get('password')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        userlogin = Register.objects.filter(username = username, password = password).exists()
 
-        if Register.objects.filter(email=email, password=passwrd).exists():
-            request.session['email']=email 
-            request.session['password']=passwrd 
-            return redirect(home) 
+        if userlogin:
+            request.session['username'] = username
+            request.session['password'] = password
+            
+            return HttpResponse("Good Job Succescc logn")
+            # return redirect('home')
         else:
-            message = "Your username and password doesn't match :("
-            return render(request, 'login.html', {'message': message}) 
-    return render(request, 'login.html') 
+            return HttpResponse("its wromng")
+    return render(request, 'userlogin.html')            
 
 
 def logout(request):
-    username=request.session['username']
+    del request.session['username']
     del request.session['password']
-    username.delete()
-    return render(request, 'home.html', {'username': username})
+    return HttpResponse("Byee the bye :) ")
 
 
-#  OTP views
+def frgotpassword(request):
+    if request.method == 'POST': 
+        email = request.POST.get('email')
+        
+        user = Register.objects.filter(email=email)
+        if user.exists():
+            request.session['email'] = email
+            otps = otpgenerate(request)
+            print("new otps", otps)
+            return render(request, 'newpassword.html', {'otps': otps})
+            
+        else:
+            return render(request, 'forgotpassword.html')
+        
+    return render(request, 'forgotpassword.html' ) 
 
 
+def newpassword(request):
+    if request.method=='POST':
+        inpotp = request.POST.get('inpotp')
+        storeotp = request.session.get('storeotp')
 
-def simple_mail(request):
-    send_mail(
-        subject='OTP for login',
-        message='otp sender',
-        from_email="darshuuu11@gmail.com",
-        recipient_list=['darshuuu11@gmail.com'])
-    return HttpResponse("otp messageee")
+        if inpotp == storeotp:
+            
+            password1 = request.POST.get('password1')
+            password2 = request.POST.get('password2')
+
+            if password1 == password2:
+                return HttpResponse("right")
+            else:
+                msgg="pasword doesn't match"
+            
+    return render(request, 'newpassword.html',  {'msgg': msgg})
 
 
-def otpgenerate(request):
+def otpgenerate(request):   
     if request.method == 'POST':
        mailid = request.POST.get('email')
 
-    
-    # Validate the email
-    try:
+       # Validate the email
+       try:
         validate_email(mailid)
         valid_email = True
-    except ValidationError:
-        valid_email = False
-        
+       except ValidationError:
+            valid_email = False  
 
-        otp = random.randint(100000, 999999)
-        print("otp code is", otp)
-        request.session['otp_code'] = otp
-        request.session['created_at'] = timezone() 
-        request.session['email'] = mailid   
-
-
-#  send otp in mail 
-        send_mail(
-            subject='otp for Login ',
-            message=f'Your otp {otp}',
-            from_email="darshuuu11@gmail.com",
-            recipient_list=['darshuuu11@gmail.com'])
-        return redirect('home')
-    return render(request,'otpgenerate.html')
-
-
+       if valid_email:
+            otp = random.randint(100000, 999999)
+            otptime = datetime.now()
+            print(otp)
+    
+            # Convert datetime to string
+            otptime_str = otptime.isoformat()
+            
+            # session are Used for temporary, fast-access storage of data 
+            request.session['storedotp'] = otp   
+            request.session['otpcreate_time'] = otptime_str 
+            request.session['email'] = mailid  
+             
+            send_mail(
+                subject='otp for Login ',
+                message=f' Hey Your OTP :  {otp}',
+                from_email="darshuuu11@gmail.com",
+                recipient_list=[mailid])
+            # return HttpResponse("Check youre mail")
+            return render(request, 'otpvalidate.html')
+    return render( request, 'otpgenerate.html')     
 
 
 def otpvalidate(request):
     if request.method == 'POST':
-        input_otp = request.POST.get('otp')
-        stored_otp = request.session.get('otp')
-        otp_timestamp = request.session.get('otp_timestamp')
-        current_timestamp = timezone.now().timestamp()
+        inputotp = request.POST.get('inpotp')
+        storedotp = request.session.get('storedotp')
 
-         # Set OTP validity period to 15 seconds
-        otp_validity_period = 15  # 15 seconds
-
-        if stored_otp and otp_timestamp and (current_timestamp - otp_timestamp) <= otp_validity_period:
-            if str(input_otp) == str(stored_otp):
-                return HttpResponse("OTP is valid")
-            else:
-                return HttpResponse("Invalid OTP")
+        if inputotp == storedotp:
+            return HttpResponse("sett crct")
+            
         else:
-            return HttpResponse("OTP has expired or is invalid")
+            return HttpResponse("Invalid OTP heee")
+
+    return render(request, 'otpvalidate.html')
+
+# Helper function to generate OTP
+def generate_otp():
+    return str(random.randint(100000, 999999))
+
+
+# def forget_password(request):
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         associated_users = Register.objects.filter(email=email)
+#         if associated_users.exists():
+#             for user in associated_users:
+#                 otp = generate_otp()
+#                 request.session['reset_otp'] = otp
+#                 request.session['email'] = email
+
+#                 logger.debug(f"Generated OTP: {otp}")
+#                 print(f"Generated OTP: {otp}")
+
+#                 subject = "This is a password reset mail"
+#                 message = f'Your OTP for resetting your password is {otp}.'
+#                 send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+                
+#                 return render(request, 'userapp1/newpassword.html')
+#         return render(request, 'userapp1/forget_password.html', {'error': 'Email not found'})
+#     return render(request, 'userapp1/forget_password.html')
+
+
+def apps(request):
+    if request.method=='POST':
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if password1 == password2:
+
+            return HttpResponse("Heyy rght passwrd") 
+        else:
+            print("wrong")
         
-        
+    return render(request, 'apps.html')
+

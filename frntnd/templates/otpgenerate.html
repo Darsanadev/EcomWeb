@@ -5,17 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body> 
     <h1 style="text-align: center;">Login with OTP</h1>
-    <form action="" method="POST" name="" enctype="multipart/form-data" style="text-align: center;" >
+    <form action="" method="POST" name="" enctype="multipart/form-data" style="text-align: center;">
         {% csrf_token %}
-  
-        <input type="email" name="email" placeholder=" Enter Email" required> <button>SENT</button><br><br>
-        <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Enter the OTP : <input type="text" name="" id=""></p>
-        <button>Resend OTP</button>
-        <button type="submit" >verify OTP</button>
-  
-    </form>
-
+        <p>We will send the verification code on you email id</p>
+        <input type="email" name="email" placeholder=" Enter Email" required>
+        <a href="{% url 'frntnd:otpvalidate' %}"><button type="submit" onclick="showmsg()">SENT</button></a><br><br>
+        
+    </form>  
+    
+    <script>
+        function showmsg(){  
+           alert( "Check your Email") 
+    
+        }
+    </script>
+    
 </body>
 </html>

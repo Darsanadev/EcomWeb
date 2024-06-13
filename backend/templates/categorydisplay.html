@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body> 
         <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -29,26 +29,25 @@
                         <td>{{i.cname}}</td>
                         <td>{{i.description}}</td>
                         <td>{{i.is_listed}}</td>
+                        <td><img src="{{i.image.url}}" alt=""  width="100px" height="100px"></td>
                         <td>
-                          
-                            <img src="{{i.image.url}}" alt=""  width="100px" height="100px">
-                        </td>
-                        <td>
-                          <a href="">
-                            <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3 " id="toggleButton">
-                              <span id="is_listedtext" class="list-text">List</span>
-                              <span>Un List</span>
-                            </button>
-                          </a>
 
-                          
+                          {% if i.is_listed %}
+                          <a href="{% url 'backend:cate_list' id=i.id %}">
+                            <button type="button"  class="btn btn-success btn-sm btn-icon-text mr-3" >List</button>
+                          </a>
+                          {% else %}
+                          <a href="{% url 'backend:cate_list' i.id %}">
+                            <button type="button" class="btn btn-danger btn-sm btn-icon-text" >Unlist</button>
+                          </a>
+                          {% endif %}
+                           
                             <a href="categoryedit/{{i.id}}">
                                 <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
                                     Edit
                                     <i class="typcn typcn-edit btn-icon-append"></i>                          
                                 </button> 
                             </a>
-                            
                         
                             <a href="categorydelete/{{i.id}}">
                                 <button type="button" class="btn btn-danger btn-sm btn-icon-text">
@@ -66,51 +65,6 @@
             </div>
           </div>
         </div>
-
-
-  <!--  javascript using list and Unlist  -->
-
-    <!-- JavaScript for toggle button functionality -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-            var toggleButton = document.getElementById("toggleButton");
-            var isListedInput = document.getElementById("is_listedtext");
-
-            toggleButton.addEventListener("click", function() {
-                if (isListedInput.value === "True") {
-                    isListedInput.value = "False";
-                    toggleButton.textContent = "Unlist";
-                } else {
-                    isListedInput.value = "True";
-                    toggleButton.textContent = "List";
-                }
-            });
-        });
-
-
-
-      // document.addEventListener('DOMContentLoaded', function() {
-      //     var toggleButtons = document.querySelectorAll('.list-toggle-btn');
-          
-      //     toggleButtons.forEach(function(button) {
-      //         button.addEventListener('click', function() {
-      //             var listText = button.querySelector('.list-text');
-      //             var unlistText = button.querySelector('.unlist-text');
-                  
-      //             if (listText.style.display === 'none') {
-                      
-      //                 unlistText.style.display = 'block';
-      //             } else {
-      //                 listText.style.display = 'block';
-      //                 unlistText.style.display = 'none';
-      //             }
-      //         });
-      //     });
-      // });
-  </script>
-
-
-
 
 </body>
 </html>

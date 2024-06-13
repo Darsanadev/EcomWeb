@@ -18,7 +18,7 @@
   <!-- endinject -->
   <link rel="shortcut icon" href="{% static 'backndstyles/images/favicon.png' %}" />
 </head>
-<body>
+<body style="overflow-y: scroll; ">
   
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
@@ -50,9 +50,7 @@
               </a>
             </div>
           </li>
-
         </ul>
-      
        
       </div>
     </nav>
@@ -251,6 +249,8 @@
               <div class="badge badge-danger">new</div>
             </a>
           </li>
+
+
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="typcn typcn-document-text menu-icon"></i>
@@ -265,7 +265,6 @@
             </div>
           </li>
 
-          
          
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
@@ -280,8 +279,38 @@
               </ul>
             </div>
           </li>
-          
 
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+              <i class="typcn typcn-chart-pie-outline menu-icon"></i>
+              <span class="menu-title">Product</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="charts">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{% url 'backend:prodata' %}">Product data</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'backend:prodisplay' %}">Product display</a></li>
+             
+              </ul>
+            </div>
+          </li> 
+
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <i class="typcn typcn-user-add-outline menu-icon"></i>
+              <span class="menu-title">User Contact </span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'backend:user' %}">User</a></li>
+              </ul>
+            </div>
+          </li>
+
+<!--           
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
               <i class="typcn typcn-film menu-icon"></i>
@@ -294,34 +323,7 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'backend:prodisplay' %}">Product display</a></li>
               </ul>
             </div>
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-              <i class="typcn typcn-chart-pie-outline menu-icon"></i>
-              <span class="menu-title">User Contact</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="charts">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'backend:user' %}">User</a></li>
-              </ul>
-            </div>
-          </li> 
-
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="typcn typcn-user-add-outline menu-icon"></i>
-              <span class="menu-title">Login / Signup</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
-              </ul>
-            </div>
-          </li>
+          </li> -->
           
         </ul>
       </nav>

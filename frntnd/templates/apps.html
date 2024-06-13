@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="passform" style="display: block; text-align: center; margin-top: 70px;">
+        <h1>Set youR neW paSsWord</h1>
+          <form action="" method="POST" enctype="multipart/form-data" style="margin-top: 20px;" name="passForm"  onsubmit="passwordvalidaa()" >
+            {% csrf_token %}
+            <label for="">OTP</label><br>
+            <input type="text" name="inpotp" placeholder="Enter Your OTP" required ><br><br>
+            
+            <input type="password" name="password1" placeholder="Enter new password" required><br><br>
+            <input type="password" name="password2" placeholder="Confirm password" required><br><br>
+            {% if sho %}
+              <p style="color: red; font-size: 15px;">{{ sho }}</p>            
+            {% endif %}  
+              
+              <button type="submit" class="btnstyle" style="margin-top: 20px;">Sett</button>
+          </form>       
+      </div>
+
+
+          
+<style>
+    .btnstyle{
+      margin-top: 20px;
+      border: none;
+      border-radius: 3px;
+      font-size: 17px;
+      width: 177px;
+      height: 35px;
+      background-color: rgb(212, 206, 206);
+    }
+    .btnstyle:hover{
+      background-color: rgb(103, 188, 231);
+    }
+  
+  
+</style>
+  
+
+
+
+<script>
+    function passwordvalidaa(){
+      password1 = document.passForm.password1.value
+      
+    //   error = document.getElementById(alert).value
+    //   document.getElementById("errormessage").innerHTML=error
+      
+      if(password1.length<6){
+        alert("Password must be at least 6 characters")
+        event.preventDefault();
+      }else if(!/[A-Z]/.test(password1)){
+        alert("Password canat least one Upper casee venmm ")
+        event.preventDefault();
+      }else if(!/[a-z]/.test(password1)){
+        message("Password can least one lowerr casee venmm ")
+        event.preventDefault();
+      }else if(!/[0-9]/.test(password1)){
+        alert("Password contains any numbers wanted")
+        event.preventDefault();
+      }else if(!/[!@$%&^#*]/.test(password1)){
+        alert("Password can any special characters used to strong.")
+        event.preventDefault();
+      }
+    }
+  </script>
+  
+    
+</body>
+</html>

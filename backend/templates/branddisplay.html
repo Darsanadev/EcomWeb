@@ -30,12 +30,22 @@
                         <td>{{brands.description}}</td>
                         <td>{{brands.is_listed}}</td>
                         <td>
-                          <a href="">
-                            <button type="button" id="listbtn"  onclick="changeButtonColor()" class="btn btn-success btn-sm btn-icon-text mr-3" onclick="showlist()">
-                              <span style="display: block;">List</span> <span style="display: none;">Un List</span>               
-                            </button> 
 
+
+
+                          {% if brands.is_listed %}
+
+                          <a href="{% url 'backend:brand_list' id=i.id %}">
+                            <button type="button"  class="btn btn-success btn-sm btn-icon-text mr-3" >List</button>
                           </a>
+                         
+                          {% else %}
+                            <a href="{% url 'backend:brand_list' id=i.id %}">
+                              <button type="submit" class="btn btn-danger btn-sm btn-icon-text">Unlist</button>
+                            </a>  
+                          {% endif %}
+
+                            
                             <a href="brandedit/{{brands.id}}">
                                 <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
                                     Edit
@@ -49,6 +59,7 @@
                                     <i class="typcn typcn-delete-outline btn-icon-append"></i>                          
                                 </button>
                             </a>
+
                         </td>
                     </tr>
                     {% endfor %}
@@ -59,44 +70,6 @@
             </div>
           </div>
         </div>
-        <style>
-         
-
-.unlist {
-    background-color: red;
-    color: white;
-}
-        </style>
-
-        <script>
-
-function changeButtonColor() {
-    var button = document.getElementById('listbtn');
-    button.classList.remove('listt');
-    button.classList.add('unlist');
-    button.textContent = 'Unlist';
-    button.onclick = null;
-}
-
-
-
-
-
-
-          // function showlist(){
-          //   var listbtn = document.getElementById("listbtn").value 
-
-          //   document.getElementById("listbtn")
-
-
-
-          // }
-        </script>
-
-
-
-
-
 </body>
 </html>
 {% endblock %}

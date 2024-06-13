@@ -51,26 +51,6 @@
         {% endfor %}
     {% endif %}
 
-    <!--  ajvaScript to change list and Unlist  -->
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var toggleButton = document.getElementById("toggleButton");
-            var isListedInput = document.getElementById("is_listed");
-
-            toggleButton.addEventListener("click", function() {
-                if (isListedInput.value === "True") {
-                    isListedInput.value = "False";
-                    toggleButton.textContent = "Unlist";
-                } else {
-                    isListedInput.value = "True";
-                    toggleButton.textContent = "List";
-                }
-            });
-        });
-    </script>
-
 </body>
 </html>
 {% endblock %}

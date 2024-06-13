@@ -103,16 +103,15 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'frntnd:product' %}">Products</a>
                   </li>
+
                   <li class="nav-item">
-                  
-                    {% if requst.session.username %}
-                    <a class="nav-link" href="{% url 'frntnd:logout' %}">Hey {{requst.session.username}} / Logout</a>
-                    {% else %}  
-                    <a class="nav-link" href="{% url 'frntnd:login' %}">Register / Login</a>
-                    {% endif %}  
-                  
-                  </li>
-                  
+                    {% if request.session.username %}
+                        <a class="nav-link" href="{% url 'frntnd:logout' %}">Hey {{ request.session.username }} / Logout</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'frntnd:userlogin' %}">Register / Login</a>
+                    {% endif %}
+                   </li>
+              
                 </ul>
               </div>
             
@@ -151,8 +150,7 @@
   </header>
   <!--================Header Menu Area =================-->
 
-
-
+  
 
   <!--================Home Banner Area =================-->
   <section class="home_banner_area mb-40">
@@ -170,7 +168,6 @@
     </div>
   </section>
   <!--================End Home Banner Area =================-->
-
 
 
 

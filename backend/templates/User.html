@@ -36,26 +36,12 @@
                         <td>{{accounts.address}}</td>
                         <td>{{accounts.pin}}</td>
                         <td>
-                          <a href="">
-                            <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
-                              <span>Block</span> <span style="display: none;">Un Block</span>               
-                            </button> 
-                            
-                          </a>
-                            <a href="">
-                                <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
-                                    Edit
-                                    <i class="typcn typcn-edit btn-icon-append"></i>                          
-                                </button> 
-                            </a>
-                            
-                        
-                            <a href="branddelete/{{brands.id}}">
-                                <button type="button" class="btn btn-danger btn-sm btn-icon-text">
-                                    Delete
-                                    <i class="typcn typcn-delete-outline btn-icon-append"></i>                          
-                                </button>
-                            </a>
+
+                          
+                          <a href=""><button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">Block</button> </a>
+                
+                          <a href=""><button type="button" class="btn btn-danger btn-sm btn-icon-text">Un Block</button></a>
+                          
                         </td>
                     </tr>
                     {% endfor %}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="icon" href="img/favicon.png" type="image/png" />
+  <title>EcomWebste</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% static 'Home/css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/linericon/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/font-awesome.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/themify-icons.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/flaticon.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/owl-carousel/owl.carousel.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/lightbox/simpleLightbox.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/nice-select/css/nice-select.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/animate-css/animate.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/jquery-ui/jquery-ui.css' %}" />
+  <!-- main css -->
+  <link rel="stylesheet" href="{% static 'Home/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/responsive.css' %}" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="col-md-6">
+            <div class="account" style="margin-top: 80px;  text-align: center;">
+                <h1>Edit aCcOuNt</h1>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <input type="text" name="name" value="{{acc.name}}" placeholder="Name" class="colm" required><br><br>
+                <input type="number" name="phone" value="{{acc.phone}}" placeholder="Phone" class="colm" required><br><br>
+                <input type="text" name="state" value="{{ acc.state}}" placeholder="state" required class="colmm">
+                <input type="text" name="city" value="{{acc.city}}" placeholder="city" required class="colmm"><br><br>
+                <textarea name="address" placeholder="Address" class="colm" required>{{acc.address}}</textarea><br><br>
+                <input type="number" name="pin" value="{{acc.pin}}" placeholder="pin" class="colmm" required><br><br>
+                <button class="savebtn" onclick="savepopup">Save Address</button>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    .colm{
+        width: 350px;
+        height: 45px;
+        border-color: rgb(124, 225, 225);
+    }
+    .colmm{
+        width: 170px;
+        height: 38px;
+        border-color: rgb(124, 225, 225);
+       
+        
+    }
+    .savebtn{
+        width: 250px;
+        height: 40px;
+        border: none;
+        background-color: rgb(204, 142, 17);
+        font-size: 17px;
+        border-radius: 3px;
+         
+    }
+    
+    </style>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="{% static 'Home/js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'Home/js/popper.js' %}"></script>
+  <script src="{% static 'Home/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'Home/js/stellar.js' %}"></script>
+  <script src="{% static 'Home/vendors/lightbox/simpleLightbox.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/nice-select/js/jquery.nice-select.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/isotope/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/isotope/isotope-min.js' %}"></script>
+  <script src="{% static 'Home/vendors/owl-carousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'Home/js/jquery.ajaxchimp.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/counter-up/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/counter-up/jquery.counterup.js' %}"></script>
+  <script src="{% static 'Home/js/mail-script.js' %}"></script>
+  <script src="{% static 'Home/js/theme.js' %}"></script>
+</body>
+</html>
+      

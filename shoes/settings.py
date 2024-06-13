@@ -130,9 +130,12 @@ MEDIA_URL = 'media/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
-EMAIL_PORT = 587
+EMAIL_PORT = 587     
 EMAIL_HOST_USER = 'darshuuu11@gmail.com'
-EMAIL_HOST_PASSWORD = 'D@r@12345'
+EMAIL_HOST_PASSWORD = 'zaze jnlq csiv gpvr'
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 
 # Default primary key field type
