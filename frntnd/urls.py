@@ -11,7 +11,6 @@ urlpatterns = [
 
 
     path('account/', views.account, name='account'),
-    path('accountedit/', views.accountedit, name='accountedit'),
     path('deleteaccount/<int:id>', views.deleteaccount, name='deleteaccount'),
     path('editaccnt/<int:id>', views.editaccnt, name='editaccnt'),
   
@@ -19,8 +18,8 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('category/<catname>/', views.category, name='category'), # catname is an argument 
     path('whishlist/', views.whishlist, name='whishlist'),
-    path('cart/', views.cart, name='cart'),
-    path('removecart/<int:id>', views.removecart, name='removecart'),
+    path('cart/<int:id>/', views.cart, name='cart'),
+    path('cartremove/<int:id>', views.cartremove, name='cartremove'),
     path('checkout/', views.checkout, name='checkout'),
     
 

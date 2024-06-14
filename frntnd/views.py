@@ -70,11 +70,6 @@ def account(request):
     return render(request, 'account.html', {'accounts': accounts})
 
 
-def accountedit(request):
-    acc = Useraccount.objects.all()
-    return render(request, 'account.html', {'acc': acc})
-
-
 def editaccnt(request, id):
     acc = Useraccount.objects.get(id=id)
     if request.method == 'POST':
@@ -115,17 +110,16 @@ def cartdata(request):
         cartt.save() 
         return redirect(cart)    
     return render(request, 'cartdata.html')     
-    
+
+
     
 def cart(request, id):
     product = Product.objects.get(id=id)
-    category = Category.objects.all()
-    brand = Brand.objects.all()
-    cartt = Cart.objects.get(id=id)
-    return render(request, 'cart.html', {'product': product, 'category': category, 'brand': brand, 'cartt': cartt})
+    cartt = Cart.objects()
+    return render(request, 'cart.html', {'product': product, 'cartt': cartt})
 
 
-def removecart(request, id):
+def cartremove(request, id):
     cartt = Cart.objects.get(id=id)
     cartt.delete()
     return render(request, 'cart.html', {'cartt': cartt})
@@ -209,7 +203,7 @@ def newpassword(request):
                 return HttpResponse("right")
             else:
                 msgg="pasword doesn't match"
-            
+        
     return render(request, 'newpassword.html',  {'msgg': msgg})
 
 
