@@ -11,8 +11,8 @@
     <form action="" method="POST" name="" enctype="multipart/form-data" style="text-align: center;" >
         {% csrf_token %}
         <p  style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">We emailed you a 6 character code for verification on your registered email-id.<br>Enter the code to confirm the email.</p><br>
-        <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Enter the OTP : <input type="text" name="inpotp" id="inpotp" ></p><br>
-        <a href="" onclick="stuck()"><button>Resend OTP</button></a>
+        <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Enter the OTP : <input type="text" name="inpotp" maxlength="6" id="inpotp" ></p><br>
+        <a href="{% url 'frntnd:otpgenerate' %}" ><button>Resend OTP</button></a>
         <button type="submit">verify OTP</button> 
     </form>
 

@@ -39,7 +39,7 @@
           {% if message %}
             <p style="color: red; font-size: 17px;">{{message}}</p>            
           {% endif %}  
-            <span style="margin-left: -60px;"> <a href="{% url 'frntnd:forgotpassword' %}">Forgot Password</a></span><br>
+            <span style="margin-left: -60px;"> <a href="{% url 'frntnd:forgotpass' %}">Forgot Password</a></span><br>
 
             <h5 style="margin-top: 20px;">You don't have an account 
               <a href="{% url 'frntnd:register' %}">ReGisTeR</a> / <a href="{% url 'frntnd:otpgenerate' %}">Send with OTP</a>
@@ -70,9 +70,7 @@
 <script>
   function formvalidaa(){
     name = document.registerForm.username.value
-    email = document.registerForm.email.value
-    password = document.registerForm.password.value
-    
+
   //   error = document.getElementById(alert).value
   //   document.getElementById("errormessage").innerHTML=error
     

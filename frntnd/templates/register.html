@@ -33,6 +33,7 @@
        {% csrf_token %}
        <input type="text" name="username" placeholder="Name" required><br><br> 
        <input type="email" name="email" placeholder="Email" required><br><br>
+       <input type="number" name="number" placeholder="phone" min="10" required><br><br>
        <input type="password" name="password" placeholder="password" required><br><br>
        
        <a href="{% url 'frntnd:otpvalidate' %}"><button class="btnstyle">REGISTER</button></a>

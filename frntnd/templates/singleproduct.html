@@ -83,22 +83,7 @@
                   <li class="nav-item active">
                     <a class="nav-link" href="{% url 'frntnd:home' %}">Home</a>
                   </li>
-                  <li class="nav-item submenu dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="false">Shop</a>
-                    <ul class="dropdown-menu">
-                     
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frntnd:home' %}">Product Details</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frntnd:home' %}">Product Checkout</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frntnd:home' %}">Shopping Cart</a>
-                      </li>
-                    </ul>
-                  </li>
+                 
                   <!-- category dropdown -->
                    <li class="nav-item submenu dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -123,14 +108,13 @@
 
                     </ul>
                   </li>
+                  
+                  
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'frntnd:product' %}">Products</a>
+                  </li>
+
                  
-                  <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Products</a>
-                  </li>
-                  <div style="margin-right: -107px;">
-                  <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Register / Login</a>
-                  </li>
                   </div>
                 </ul>
               </div>
@@ -184,11 +168,11 @@
           <div class="sideimg">
             
               <div class="div1">
-                <a href=""><img id="img1" style="width: 111px;" src="{{products.image.url}}" alt=""></a><br><br>
+                <a href=""><img id="img1" style="width: 111px;" src="{{products.image1.url}}" alt=""></a><br><br>
               </div>
 
-            <a href=""><img id="img2" style="width: 111px;"  src="{{products.image.url}}" alt=""></a><br><br>
-            <a href=""><img id="img3" style="width: 111px;"  src="{{products.image.url}}" alt=""></a><br><br>
+            <a href=""><img id="img2" style="width: 111px;"  src="{{products.image2.url}}" alt=""></a><br><br>
+            <a href=""><img id="img3" style="width: 111px;"  src="{{products.image3.url}}" alt=""></a><br><br>
 
           </div>
           
@@ -213,15 +197,26 @@
             <h4><s style="color: gray;" class="total"  >{{products.landing_price}}</s>   <span style="margin-left: 20px;" class="total" > ${{products.selling_price}}</span></h4>
 
           </div><br>
+          
+
+          
+          {% if products.brand.offer %}
+          <h4 style="color: rgb(32, 189, 32);">{{ products.brand.offer }}% off</h4>
+          {% else %}
+            <h6>No current offers</h6>
+          {% endif %}
+          
           <input type="text" class="price" id="price" value="{{products.selling_price}}" style="display: none;"><br><br>
           
         
           <div class="card-area">
-            <button class="cartbtn"><a  href=""> ADD to CART</a></button>
+            <a href=""><button class="cartbtn">Buy Now</button></a>
+
+
             <div class="buynow">
-              <button class="buybtn" style="margin-left: 300px;"><a  href="">BUY NOW</a></button>
+              <a  href="{% url 'frntnd:addcart' products.id%}"><button class="buybtn" style="margin-left: 300px;"> goto CART</button></a>
             </div>
-          
+
           </div>
         
         </div>
@@ -253,15 +248,32 @@
     border: none;
     border-radius: 3px;
     font-size: 21px;
-    color: black;
+    color: rgb(0, 0, 0);
     margin-top: -40px;
    
+  }
+  .cartbtn:hover{
+    color: white;
   }
   .buynow{
     margin-top: -36px;
     margin-left: -60px;
   }
-  .buybtn{
+  /* .buybtn{
+            
+            padding: 5px;
+            font-size: 21px;
+            cursor: pointer;
+            margin-top: -10px;
+            
+            margin-left: 600px;
+        } */
+
+
+        .buybtn:hover{
+          color: white;
+        } 
+   .buybtn{
 
     width: 220px;
     height: 50px;
@@ -273,7 +285,7 @@
     margin-top: -50px;
 
 
-  }
+  } 
   .singlebtn:hover{
     background-color: orange;
     color: white;
@@ -382,44 +394,14 @@
   //           }) 
     
 
-   
-        $(".btn").click(function(){
-            $("#div1").show()
-        })
-        $(".btn0").click(function(){
-            $(".hlo").hide()
-        })
-        $(".btn1").click(function(){
-            $(".hlo").show()
-        })
-
-
-
-
-
-        $("#img1").mouseenter(function(){
-          $("#imgg").toggle()
-        })
-
 
     })
 
 
-  //   $(document).ready(function(){
-  //     $("#img1").mouseenter(function(){
-  //       $("#img1").show()
-  //       $("#imgg").hide()
-  //     })
-  // })
 </script>
    
 
-
-
   <!--================ End Inspired Product Area =================-->
-
-
-
 
 
 

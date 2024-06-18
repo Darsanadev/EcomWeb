@@ -39,12 +39,12 @@ def categorydata(request):
         return render(request, 'categorydata.html')
     return render(request, 'categorydata.html') 
  
-@login_required
+
 def categorydisplay(request):
     cate = Category.objects.all()
     return render(request, 'categorydisplay.html', {'cate': cate})
 
-@login_required
+
 def categoryedit(request, id): 
     categ = Category.objects.get(id=id)
     if request.method == 'POST':
@@ -56,13 +56,13 @@ def categoryedit(request, id):
         categ.description = description
         categ.image = image
         categ.save()
-        return redirect('categorydelete')
+        return redirect('backend:categorydisplay')
     return render(request, 'categoryedit.html', {'categ': categ})
 
 def categorydelete(id):
     catedelete = Category.objects.get(id=id)
     catedelete.delete()
-    return redirect('categorydisplay')
+    return redirect('backend:categorydisplay')
 
 def cate_list(request, id):
     catelst = get_object_or_404(Brand, id=id)
@@ -75,51 +75,55 @@ def cate_list(request, id):
             catelst.is_listed=False
 
         catelst.save()
-        return redirect('catedisplay', id=id)
-    return redirect('https://chatgpt.com/')
-        
+        return redirect('backend:catedisplay')
+    return redirect('backend:branddisplay')
+       
+
 
 # views of brands
 
-@login_required
 def brand(request):
     if request.method == 'POST':
         brand = request.POST.get('brand')
         description = request.POST.get('description')
+        offer = request.POST.get('offer')
         is_listed = request.POST.get('is_listed')
         if Brand.objects.filter(brand=brand).exists():
             message = "Brand with this name alrdy exists."
             return render(request, 'brand.html', {"message": message})
-        brand = Brand(brand=brand, description=description, is_listed=is_listed)
+        brand = Brand(brand=brand, description=description, offer=offer, is_listed=is_listed)
         brand.save()  
     return render(request, 'brand.html')
 
 
-@login_required
+
 def branddisplay(request):
     brand = Brand.objects.all()
     return render(request, 'branddisplay.html', {'brand': brand})
 
- 
+
 def branddelete(id): 
     brand = Brand.objects.get(id=id)
     brand.delete() 
-    return redirect('branddisplay') 
+    return redirect('backend:branddisplay') 
 
 
 def brandedit(request, id):
     bran = Brand.objects.get(id=id)
-    if request.method == 'GET':
+    if request.method == 'POST':
         brand = request.POST.get('brand')
         description = request.POST.get('description')
+        offer = request.POST.get('offer')
         is_listed = request.POST.get('is_listed')
         
         bran.brand = brand
         bran.description = description
+        bran.offer = offer
         bran.is_listed = is_listed
         bran.save()
-        return redirect('branddisplay')
-    return render(request, 'brandedit.html')    
+        return redirect('backend:branddisplay')
+
+    return render(request, 'brandedit.html', {'bran': bran})    
 
 def brand_list(request, id):
     brandlst = get_object_or_404(Brand, id=id)
@@ -130,7 +134,7 @@ def brand_list(request, id):
             brandlst.is_listed=True
 
         brandlst.save()
-        return redirect('backend:brand_list')
+        return redirect('backend:branddisplay')
     return redirect('backend:branddisplay')
 
 
@@ -148,7 +152,7 @@ def prodata(request):
         brand_id = int(brand_id)
         
         # Get Category and Brand instances
-        category = get_object_or_404(Category, id=category_id)
+        category = Category.objects.filter(id=category_id)
         brand = get_object_or_404(Brand, id=brand_id)
         
         product = request.POST.get('product')
@@ -162,7 +166,7 @@ def prodata(request):
         image3 = request.FILES['image3'] 
         is_listed = request.POST.get('is_listed')  
         pro = Product(category=category, brand=brand, product=product, size=size, landing_price=landing_price, selling_price=selling_price, 
-                      description=description, image=image,image1=image1,image2=image2,image3=image3, is_listed=is_listed)
+                    description=description, image=image,image1=image1,image2=image2,image3=image3, is_listed=is_listed)
         pro.save()  
     categories = Category.objects.all()
     brands = Brand.objects.all()
@@ -201,7 +205,7 @@ def proedit(request, id):
         pro.image2 = image2
         pro.image3 = image3
         pro.save()
-        return redirect('prodisplay')
+        return redirect('backend:prodisplay')
     return redirect('prodisplay')
 
 
@@ -212,20 +216,31 @@ def prodelete(id):
 
 
 def pro_list(request, id):
-    prolst = Product.objects.all()
-    if prolst.is_listed:
-        prolst.is_listed=True
-    else:
-        prolst.is_listed=False
-    prolst.save()
-    return redirect('pro_lst')
-
+    prolst = get_object_or_404(Product, id=id)
+    if request.method == 'GET':
+        if prolst.is_listed:
+            prolst.is_listed=False
+        else:
+            prolst.is_listed=True
+        prolst.save()
+        return redirect('backend:prodisplay')
+    return redirect('backend:prodisplay')
 
 # views of user 
 
 def user(request):  
     acc = Useraccount.objects.all()
     return render(request, 'user.html', {'acc': acc})
+
+
+def userblock(request):
+    usrblck = Useraccount.objects.all()
+    if usrblck.is_active():
+        user.block
+    else:
+        user.unblock
+    usrblck.save()
+    return redirect('usrblck')
 
 
 def userdata(request):

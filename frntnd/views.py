@@ -4,6 +4,7 @@ from frntnd . models import Useraccount, Cart, Register
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
 import random
 from datetime import datetime, timedelta
 import smtplib
@@ -45,96 +46,14 @@ def category(request, catname):
 
 
 def singleproduct(request, id):
-    cate = Category.objects.all()
-    brand = Brand.objects.all()
     pro = Product.objects.filter(id=id) 
-    return render(request, 'singleproduct.html', {'cate': cate, 'brand': brand, 'pro': pro})
+    return render(request, 'singleproduct.html', {'pro': pro})
 
 # Change Employee.objects.get(id=id) to Employee.objects.filter(id=id)
 
 # "filter() will always give you a QuerySet" - it's iterable
 # get() - return single object and it's not iterable
 
-
-def account(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        state = request.POST.get('state')
-        city = request.POST.get('city')
-        address = request.POST.get('address')
-        pin = request.POST.get('pin')
-        account = Useraccount(name=name, phone=phone, state=state, city=city, address=address, pin=pin)
-        account.save()
-    accounts = Useraccount.objects.all()
-    return render(request, 'account.html', {'accounts': accounts})
-
-
-def editaccnt(request, id):
-    acc = Useraccount.objects.get(id=id)
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        state = request.POST.get('state')
-        city = request.POST.get('city')
-        address = request.POST.get('address')
-        pin = request.POST.get('pin')
-
-        acc.name = name
-        acc.phone = phone
-        acc.state = state
-        acc.city = city
-        acc.address = address
-        acc.pin = pin
-        acc.save()
-        return redirect('account')
-    return render(request, 'editaccnt.html', {'acc': acc})
-
-
-def deleteaccount(request, id):
-    accound = Useraccount.objects.get(id=id)
-    accound.delete()
-    return render(request, 'account.html')
-
-
-def cartdata(request):
-    if request.method == 'POST':
-        image = request.POST.get('image')
-        user = request.POST.get('user')
-        orderdate = request.POST.get('orderdate')
-        product = request.POST.get('product')
-        quantity = request.POST.get('quantity')
-        price = request.POST.get('price')
-        total = request.POST.get('total')
-        cartt = Cart(image=image, user=user, orderdate=orderdate, product=product, quantity=quantity, price=price, total=total)
-        cartt.save() 
-        return redirect(cart)    
-    return render(request, 'cartdata.html')     
-
-
-    
-def cart(request, id):
-    product = Product.objects.get(id=id)
-    cartt = Cart.objects()
-    return render(request, 'cart.html', {'product': product, 'cartt': cartt})
-
-
-def cartremove(request, id):
-    cartt = Cart.objects.get(id=id)
-    cartt.delete()
-    return render(request, 'cart.html', {'cartt': cartt})
-
-
-def checkout(request):
-    return render(request, 'checkout.html')
-
-
-def contact(request):
-    return render(request, 'contact.html')
-
-
-def whishlist(request):
-    return render(request, 'whishlist.html')
 
 # Login views  
 
@@ -159,8 +78,8 @@ def userlogin(request):
             request.session['username'] = username
             request.session['password'] = password
             
-            return HttpResponse("Good Job Succescc logn")
-            # return redirect('home')
+            # message "Good Job Succescc logn"
+            return redirect('frntnd:home')
         else:
             return HttpResponse("its wromng")
     return render(request, 'userlogin.html')            
@@ -172,39 +91,45 @@ def logout(request):
     return HttpResponse("Byee the bye :) ")
 
 
-def frgotpassword(request):
-    if request.method == 'POST': 
+def forgotpass(request):
+    if request.method == 'POST':
         email = request.POST.get('email')
-        
         user = Register.objects.filter(email=email)
-        if user.exists():
-            request.session['email'] = email
-            otps = otpgenerate(request)
-            print("new otps", otps)
-            return render(request, 'newpassword.html', {'otps': otps})
-            
-        else:
-            return render(request, 'forgotpassword.html')
-        
-    return render(request, 'forgotpassword.html' ) 
 
+        request.session['regemail'] = email
+
+        if user.exists():
+            link = "http://127.0.0.1:8000/frntnd/newpassword/"
+            
+            send_mail(
+                subject='Reset Your Password ',
+                message=f' Hey Your reset password link  {link}  click the link to reset password',
+                from_email="darshuuu11@gmail.com",
+                recipient_list=[email])
+        
+        else:
+            return redirect( 'frntnd:forgotpassword')
+        
+    return render(request, 'forgotpassword.html') 
+   
 
 def newpassword(request):
     if request.method=='POST':
-        inpotp = request.POST.get('inpotp')
-        storeotp = request.session.get('storeotp')
-
-        if inpotp == storeotp:
-            
-            password1 = request.POST.get('password1')
-            password2 = request.POST.get('password2')
-
-            if password1 == password2:
-                return HttpResponse("right")
-            else:
-                msgg="pasword doesn't match"
+        email = request.session.get('regemail')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
         
-    return render(request, 'newpassword.html',  {'msgg': msgg})
+        if password1 == password2:
+            user = Register.objects.get(email=email)
+            user.password=password1
+            user.save()
+            return redirect('frntnd:userlogin')
+        
+        else:
+            # msgs "password Doesn't match"
+            return redirect('frntnd:newpassword')
+            
+    return render(request, 'newpassword.html')
 
 
 def otpgenerate(request):   
@@ -221,8 +146,8 @@ def otpgenerate(request):
        if valid_email:
             otp = random.randint(100000, 999999)
             otptime = datetime.now()
-            print(otp)
-    
+            print("otppp", otp)
+
             # Convert datetime to string
             otptime_str = otptime.isoformat()
             
@@ -233,11 +158,11 @@ def otpgenerate(request):
              
             send_mail(
                 subject='otp for Login ',
-                message=f' Hey Your OTP :  {otp}',
+                message=f' Hey Your OTP :  {otp} enjoyy hav a gud day',
                 from_email="darshuuu11@gmail.com",
                 recipient_list=[mailid])
-            # return HttpResponse("Check youre mail")
-            return render(request, 'otpvalidate.html')
+           
+            return redirect('frntnd:otpvalidate')
     return render( request, 'otpgenerate.html')     
 
 
@@ -245,14 +170,102 @@ def otpvalidate(request):
     if request.method == 'POST':
         inputotp = request.POST.get('inpotp')
         storedotp = request.session.get('storedotp')
+        
+        print(f"Storeeeee OTP: {storedotp}")
+        print(f"Inputeee OTP: {inputotp}")
 
-        if inputotp == storedotp:
-            return HttpResponse("sett crct")
+        if str(inputotp) == str(storedotp):
+            # Clear session data if needed  
+            # del request.session['storedotp']  
+            return redirect('frntnd:home')
             
         else:
-            return HttpResponse("Invalid OTP heee")
+            print("Invalid OTP entered")
+            return HttpResponse("Invalid OTP")
 
     return render(request, 'otpvalidate.html')
+
+
+#  User account
+
+def addaccount(request):
+    return render(request)
+
+def account(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        state = request.POST.get('state')
+        city = request.POST.get('city')
+        address = request.POST.get('address')
+        pin = request.POST.get('pin')
+        account = Useraccount(name=name, phone=phone, state=state, city=city, address=address, pin=pin)
+        account.save()
+        return redirect('frntnd:account')
+
+    accounts = Useraccount.objects.filter(name = request.session['username'])
+
+    return render(request, 'account.html', {'accounts': accounts})
+
+
+def editaccnt(request, id):
+    acc = Useraccount.objects.get(id=id)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        state = request.POST.get('state')
+        city = request.POST.get('city')
+        address = request.POST.get('address')
+        pin = request.POST.get('pin')
+
+        acc.name = name
+        acc.phone = phone
+        acc.state = state
+        acc.city = city
+        acc.address = address
+        acc.pin = pin
+        acc.save()
+        return redirect('frntnd:account')
+    return render(request, 'editaccnt.html', {'acc': acc})
+
+
+def deleteaccount(id):
+    accound = Useraccount.objects.get(id=id)
+    accound.delete()
+    return redirect('frntnd:account')
+  
+
+
+    #  cart db ilkii evdna data varniii     
+@login_required
+def cart(request):
+    prodt = Product.objects.filter(user= request.session['username'])
+    return render(request, 'cart.html', {'prodt': prodt})  
+
+
+def addcart(request, id):
+    product = get_object_or_404(Product, id=id)
+    cartitem = Cart.objects.get_or_create(prodt=product)
+    return redirect('frntnd:cart',  {'product':product, 'cartitem':cartitem})
+    
+
+def cartremove(id):
+    cartt = Cart.objects.get(id=id) 
+    cartt.delete()
+    return redirect('frntnd:cart')
+
+@login_required
+def checkout(request):
+    return render(request, 'checkout.html')
+
+@login_required
+def contact(request):
+    return render(request, 'contact.html')
+
+@login_required
+def whishlist(request):
+    return render(request, 'whishlist.html')
+
 
 # Helper function to generate OTP
 def generate_otp():

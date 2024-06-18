@@ -17,7 +17,8 @@
                       <tr>  
                         
                         <th>Brand</th> 
-                        <th>Description</th>   
+                        <th>Description</th>
+                        <th>Offer</th>
                         <th>Show / Naah</th>  
                         
                       </tr>
@@ -28,6 +29,7 @@
                     <tr>
                         <td>{{brands.brand}}</td>
                         <td>{{brands.description}}</td>
+                        <td>{{brands.offer}}</td>
                         <td>{{brands.is_listed}}</td>
                         <td>
 
@@ -35,12 +37,12 @@
 
                           {% if brands.is_listed %}
 
-                          <a href="{% url 'backend:brand_list' id=i.id %}">
+                          <a href="{% url 'backend:brand_list' brands.id %}">
                             <button type="button"  class="btn btn-success btn-sm btn-icon-text mr-3" >List</button>
                           </a>
                          
                           {% else %}
-                            <a href="{% url 'backend:brand_list' id=i.id %}">
+                            <a href="{% url 'backend:brand_list' brands.id %}">
                               <button type="submit" class="btn btn-danger btn-sm btn-icon-text">Unlist</button>
                             </a>  
                           {% endif %}

@@ -23,7 +23,7 @@ urlpatterns = [
     path('prodisplay/', views.prodisplay, name='prodisplay'),       
     path('proedit/<int:id>', views.proedit, name='proedit'),  
     path('prodelete/<int:id>/', views.prodelete, name='prodelete'),
-    path('prolst/<int:id>/', views.pro_list, name='prolst'),
+    path('pro_list/<int:id>/', views.pro_list, name='pro_list'),
 
     path('userdata/', views.userdata, name='userdata'),
     path('user/', views.user, name='user'),

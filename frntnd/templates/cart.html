@@ -83,22 +83,7 @@
                   <li class="nav-item active">
                     <a class="nav-link" href="{% url 'frntnd:home' %}">Home</a>
                   </li>
-                  <li class="nav-item submenu dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="false">Shop</a>
-                    <ul class="dropdown-menu">
-                     
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frntnd:home' %}">Product Details</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frntnd:home' %}">Product Checkout</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frntnd:home' %}">Shopping Cart</a>
-                      </li>
-                    </ul>
-                  </li>
+                  
                   <!-- category dropdown -->
                    <li class="nav-item submenu dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -110,6 +95,10 @@
                       {% endfor %}
 
                     </ul>
+                  </li>
+                  
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'frntnd:product' %}">Products</a>
                   </li>
                   <!-- brand dropdown -->
                   <li class="nav-item submenu dropdown">
@@ -123,15 +112,13 @@
 
                     </ul>
                   </li>
+                  <li class="nav-item">
+                    {% if request.session.username %}
+                    <h5 style="margin-top: 29px;">Heyy... {{ request.session.username }} </h5>
+                    {% endif %}
+                  </li>
+                  
                  
-                  <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Products</a>
-                  </li>
-                  <div style="margin-right: -107px;">
-                  <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Register / Login</a>
-                  </li>
-                  </div>
                 </ul>
               </div>
             
@@ -166,44 +153,51 @@
       </div>
     </div>
   </header>
-  <!--================Header Menu Area =================-->
+  <!--================Header Menu Area =================-->  
 
+<body>
 
 <!--  Cart area   -->
-{% for carts in cartt %}
+{% for crt in prodt %}
 <div class="cart-area">
   <div class="container">
     <div class="col-md-6">
-
+    
     <div class="leftside">
       <div class="cartitem">
         <div class="img">
-          <a><img src="{{cart.img.url}}" class="imgg" alt=""></a>
+          <a><img src="{{crt.image.url}}" class="imgg" alt=""></a>
         </div>
         <div class="konjmthalli">
+          <h4>{{ crt.product }}</h4> 
           
-          <h4>{{carts.product}} <span>{{products.carts}}</span></h4>
-          <h5>{{carts.description}}</h5><br>
-         
+          <h5>{{crt.description}}</h5><br>
+          
+          
+          {% if brand.offer %}
+          <h5 style="color: rgb(32, 189, 32);">{{ crt.brand.offer }}% off</h5>
+          {% else %}
+            <h6>No current offers</h6>
+          {% endif %}
+
+          <input type="text" id="price" value="{{crt.selling_price}}" style="display: none;">
+          
           <div class="card-area">
-            <h4><s style="color: gray;" class="total"  >123</s>  
-              <span style="margin-left: 20px;" class="total" > 657</span></h4>
+            <h4><s style="color: gray;" class="" >{{ crt.landing_price }}</s>  
+              <span style="margin-left: 20px;" id="total"> {{crt.selling_price}} </span></h4>
           </div>
-        
+           
           <h5 style="color: green;">Free Shipping <s style="color: gray;" class="">40</s></h5>
 
-          <input type="number" min="1" class="qtyy" id="">
-          <a href="cartremove/{{carts.id}}"><button class="btnn">Remove</button></a>
+          <input type="number" min="1" value="1" id="qty" minlength="10">
+          <a href="cartremove/{{crt.id}}" class="btnn">Remove</a>
         </div>
-        
         <hr>
-      
-
-      <button class="orderbtn">PlAceOrDeR</button>
-
+        
+      <a href="{% url 'frntnd:checkout' %}"><button class="orderbtn">PlAceOrDeR</button></a>
       </div>
-
-<!--      right side amount div  -->
+    
+<!--      right side amount div  -->      
 
     <div class="rightside">
       <div class="amounts">
@@ -219,10 +213,11 @@
         </div>
         <div class="money">
     
-          <h4>4</h4><br>
-          <h4>6</h4><br>
-          <h4>4</h4><br><br>
-          <h4>5</h4>
+          <h4 class="" id="">{{crt.selling_price}}</h4><br>
+
+          <h4>6{{crt.offer}}</h4><br>
+          <h5 style="color: green;">Free Shipping <s style="color: gray;" class=""><br>40</s></h5><br><br>
+          <h4 id="" class="">555</h4>
 
         </div>
       </div>
@@ -230,6 +225,50 @@
   </div>
 </div>
 {% endfor %}
+<!-- 
+<script>
+    $(document).ready(function(){
+        $("#qty").change(function(){
+            x = document.getElementById("qty").value;
+            y = document.getElementById("price").value;
+            result = x*y;
+            document.getElementById("total").value = result;
+        })
+    })
+
+</script> -->
+
+
+<!-- js to quanty inc price also inc -->
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+
+$(document).ready(function(){
+    $("#qty").change(function(){
+        x = document.getElementById("#qty").value;
+        y = document.getElementById("#price").value;
+        let result = x*y;
+        document.getElementById("#total").value = result;
+    })
+})
+
+  // $(document).ready(function(){
+  //   $(".qty").on('input', function(){
+  //     let quanty = $(this).val();
+  //     let price = $(".price").val();
+  //     let result = quanty*price;
+  //     $("#total").val(result);
+
+  //   })
+  // })
+</script>
+
+
+
+
 <style>
   /* left side */
 
@@ -254,8 +293,6 @@
     width: 130px;
     height: 140px;
     margin-left: 20px;
-
-
   }
 
   .qtyy{
@@ -273,9 +310,26 @@
   }
 .konjmthalli{
   margin-left: 250px;
-  margin-top: -100px;
+  margin-top: -135px;
 
 }
+.order-btn{
+            background-color: orange;
+            border: none;
+            padding: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: -10px;
+            width: 290px;
+            height: 50px;
+            color: black;
+            margin-left: 600px;
+        }
+
+  .orderbtn:hover{
+      color: white;
+    }
+    
 .orderbtn{
   width: 200px;
   height: 60px;
@@ -285,14 +339,15 @@
   border: none;
   margin-left: 550px;
   position: sticky;
+  cursor: pointer;
 
 
 }
   /* right side  */
   .amounts{
     width: 400px;
-    margin-left: 60%;
-    margin-top: -50px;
+    margin-left: 55%;
+    margin-top: -250px;
     height: 350px;
     background-color: white;
     position: fixed;
@@ -309,72 +364,7 @@
 </style>
 
   <!--================ start footer Area  =================-->
-  <footer class="footer-area section_gap" style="margin-top: 800px;">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-2 col-md-6 single-footer-widget">
-          <h4>Top Products</h4>
-          <ul>
-            <li><a href="#">Managed Website</a></li>
-            <li><a href="#">Manage Reputation</a></li>
-            <li><a href="#">Power Tools</a></li>
-            <li><a href="#">Marketing Service</a></li>
-          </ul>
-        </div>
-         
-        <div class="col-lg-2 col-md-6 single-footer-widget">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Our Services</a></li>
-            <li><a href="#">Terms of Service</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-2 col-md-6 single-footer-widget">
-          <h4>Features</h4>
-          <ul>
-            <li><a href="#">Jobs</a></li>
-            <li><a href="#">Brand Assets</a></li>
-            <li><a href="#">Investor Relations</a></li>
-            <li><a href="#">Terms of Service</a></li>
-          </ul>
-        </div> 
-        <div class="col-lg-2 col-md-6 single-footer-widget">
-          <h4>Address</h4>
-          <ul>
-            <li><a href="#">Palakkad, Kerala</a></li>
-            <li>+91 8943115523</li>
-            <li>Shopzie@gmail.com</a></li>
-            
-          </ul>
-        </div>
-        <div class="col-lg-4 col-md-6 single-footer-widget">
-          
-        </div>
-      </div>
-      <div class="footer-bottom row align-items-center">
-        
-        <p class="footer-text m-0 col-lg-8 col-md-12"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-<!-- Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> -->
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-        <div class="col-lg-4 col-md-12 footer-social">
-          <a href="#"><i class="fa fa-facebook"></i></a>
-          <a href="#"><i class="fa fa-twitter"></i></a>
-          <a href="#"><i class="fa fa-dribbble"></i></a>
-          <a href="#"><i class="fa fa-behance"></i></a>
-        </div>
-      </div>
-      </div>
-    </div>
-  </footer>
-  <!--================ End footer Area  =================-->
 
-
-
-
-
-  <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="{% static 'Home/js/jquery-3.2.1.min.js' %}"></script>
   <script src="{% static 'Home/js/popper.js' %}"></script>
@@ -390,6 +380,16 @@
   <script src="{% static 'Home/vendors/counter-up/jquery.counterup.js' %}"></script>
   <script src="{% static 'Home/js/mail-script.js' %}"></script>
   <script src="{% static 'Home/js/theme.js' %}"></script>
+
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>

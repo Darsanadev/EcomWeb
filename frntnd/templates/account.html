@@ -67,19 +67,26 @@
 
 <div class="row">
     <div class="col-md-6">
-        <h1 style="text-align: center; padding: 20px;">MY Account</h1>
-        <div class="border">
-            <div class="content" style="margin-left: 50px;">
+      <a class="nav-link" href="{% url 'frntnd:logout' %}" style="margin-left: 160%; margin-top: 10px;  font-size: 19px;">
+         <button style="width: 150px;  height: 35px; ">LogOut</button></a>
+
+      {% if request.session.username %}
+      <h2 style="margin-left: 258px; margin-top:-20px;" >{{ request.session.username }} account </h2>
+      {% endif %}
+     
+        <div>
+            <div class="content" style="margin-left: 55px; margin-top: 30px;">
                 {% for account in accounts %}
                     <h3 id="accname">{{account.name}}</h3>
+                    <h5 id="accphone">{{account.phone}}</h5>
                     <h5 id="accaddress">{{account.address}}</h5>
                     <h5 id="acccity">{{account.city}}, {{account.state}}</h5>
                     <h5 id="accpin">{{account.pin}}</h5><br>
-                    <h5 id="accphone">{{account.phone}}</h5>
-
+                    
+                    
                     <a href="editaccnt/{{account.id}}"><button  class="edtbtn" onclick="">Edit Karoo</button></a>
-              
-                <a href="deleteaccount/{{account.id}}"><button onclick="deleteaccount(event)" id="deleteaccc" class="edtbtn">Delete</button></a>
+                    
+                <a href="deleteaccount/{{account.id}}"><button id="deleteaccc" class="edtbtn">Delete</button></a>
                 {% endfor %}
               </div>
               <!-- <div class="addnew">
@@ -92,13 +99,7 @@
        <!-- my acoount nte style -->
 
         <style>
-            .content{
-                width: 28em;
-                height: 20rem;
-                margin-left: 130px;
-                padding: 20px;
-                background-color: rgb(249, 249, 249);
-            }
+           
             .add{
               
                 width: 250px;
@@ -127,33 +128,25 @@
                 background-color: rgb(69, 67, 67);
                 color: white;
             }
-            .border{
-              width: 23em;
-                height: 20rem;
-                margin-left: 130px;
-                border: none;
-              
-            }
+            
 
         </style>
 
     </div>
     
     <div class="addnew">
-        <div class="addnewpopup" style="display: block; ">
+        <div class="addnewpopup" style="display: block; margin-top: -150px;">
             <h1>Add new address</h1>
             <form action="" method="post", enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="text" name="name" value="{{ acc.name }}" placeholder="Name" class="colm" required><br><br>
-                <input type="number" name="phone" value="{{ acc.phone }}" placeholder="Phone" class="colm" required><br><br>
-                <input type="text" name="state" value="{{ acc.state }}" placeholder="state" required class="colmm">
-                <input type="text" name="city" value="{{ acc.city }}" placeholder="city" required class="colmm"><br><br>
-                <textarea name="address" placeholder="Address" class="colm" required>{{ acc.address }}</textarea><br><br>
-                <input type="number" name="pin" value="{{ acc.pin }}" placeholder="pin" class="colmm" required><br><br>
-                <button class="savebtn" onclick="savebtn" >Save address</button>
-         
-                
-
+                <input type="text" name="name" placeholder="Name" value="{{request.session.username}}" class="colm"><br><br>
+                <input type="number" name="phone"  placeholder="Phone" class="colm" required><br><br>
+                <input type="text" name="state" placeholder="state" required class="colmm">
+                <input type="text" name="city"  placeholder="city" required class="colmm"><br><br>
+                <textarea name="address" placeholder="Address" class="colm" required></textarea><br><br>
+                <input type="number" name="pin"  placeholder="pin" class="colmm" required><br><br>
+                <button class="order-btn">Save</button>
+              
             </form>
         </div>
     </div>
@@ -162,6 +155,21 @@
 <!-- add new address / edit address nte style -->
 
 <style>
+   .order-btn{
+      background-color: orange;
+      border: none;
+      padding: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      
+      width: 190px;
+      height: 50px;
+      color: black;
+      
+        }
+        .order-btn:hover{
+          color: white;
+        }
     .editpopup{
         margin-left: 150px;
     }
@@ -180,16 +188,7 @@
         border-color: rgb(137, 201, 201);
        
     }
-    .savebtn{
-        width: 150px;
-        height: 40px;
-        border: none;
-        background-color: rgb(204, 142, 17);
-        font-size: 17px;
-        border-radius: 3px;
-         
-    }
-    
+   
     .savebtn text{
         color: white;
         font-size: 17px;

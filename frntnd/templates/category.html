@@ -212,6 +212,12 @@
                     <span class="mr-4">$ {{products.selling_price}}</span>
                     <del> {{products.landing_price}}</del>
                    
+          {% if products.brand.offer %}
+          <h5 style="color: rgb(32, 189, 32);">{{ products.brand.offer }}% off</h5>
+          {% else %}
+            <h6>No current offers</h6>
+          {% endif %}
+          
                   </div>
                 </div>
               </div>
