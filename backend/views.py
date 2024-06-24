@@ -152,21 +152,21 @@ def prodata(request):
         brand_id = int(brand_id)
         
         # Get Category and Brand instances
-        category = Category.objects.filter(id=category_id)
+        category = Category.objects.get(id=category_id)
         brand = get_object_or_404(Brand, id=brand_id)
         
         product = request.POST.get('product')
         size = request.POST.get('size')                 
         landing_price = request.POST.get('landing_price')
         selling_price = request.POST.get('selling_price')
+        offer = request.POST.get('offer')
         description = request.POST.get('description')   
         image = request.FILES['image'] 
         image1 = request.FILES['image1'] 
         image2 = request.FILES['image2'] 
         image3 = request.FILES['image3'] 
         is_listed = request.POST.get('is_listed')  
-        pro = Product(category=category, brand=brand, product=product, size=size, landing_price=landing_price, selling_price=selling_price, 
-                    description=description, image=image,image1=image1,image2=image2,image3=image3, is_listed=is_listed)
+        pro = Product(category=category, brand=brand, product=product, size=size, landing_price=landing_price, selling_price=selling_price, offer=offer, description=description, image=image,image1=image1,image2=image2,image3=image3, is_listed=is_listed)
         pro.save()  
     categories = Category.objects.all()
     brands = Brand.objects.all()
@@ -179,40 +179,41 @@ def prodisplay(request):
     
 
 def proedit(request, id):
-    pro = Product.objects.get(id=id)
+    prodt = Product.objects.get(id=id)
     if request.method=='POST':
-        category = request.POST.get('category')
-        brand = request.POST.get('brand')
+        # category = request.POST.get('category')
+        # brand = request.POST.get('brand')
         product = request.POST.get('product')
         size = request.POST.get('size')                 
         landing_price = request.POST.get('landing_price')
         selling_price = request.POST.get('selling_price')
+        offer = request.POST.get('offer')
         description = request.POST.get('description')   
-        image = request.FILES['image']
-        image1 = request.FILES['image1']
-        image2 = request.FILES['image2']
-        image3 = request.FILES['image3']
+        # image = request.FILES['image']
+        # image1 = request.FILES['image1']
+        # image2 = request.FILES['image2']
+        # image3 = request.FILES['image3']
 
-        pro.category = category
-        pro.brand = brand
-        pro.product = product
-        pro.size = size
-        pro.landing_price = landing_price
-        pro.selling_price = selling_price
-        pro.description = description
-        pro.image = image
-        pro.image1 = image1
-        pro.image2 = image2
-        pro.image3 = image3
-        pro.save()
+        # prodt.category = category
+        # prodt.brand = brand
+        prodt.product = product
+        prodt.size = size
+        prodt.landing_price = landing_price
+        prodt.selling_price = selling_price
+        prodt.offer = offer
+        prodt.description = description
+        # prodt.image = image
+        # prodt.image1 = image1
+        # prodt.image2 = image2
+        # prodt.image3 = image3
+        prodt.save()
         return redirect('backend:prodisplay')
-    return redirect('prodisplay')
-
+    return render(request, 'proedit.html', {'prodt': prodt})
 
 def prodelete(id):
     prodel = Product.objects.get(id=id)
     prodel.delete()
-    return redirect('prodisplay')
+    return redirect('backend:prodisplay')
 
 
 def pro_list(request, id):

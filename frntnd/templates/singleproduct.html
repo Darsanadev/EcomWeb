@@ -183,51 +183,51 @@
         <div class="right-side">
           <p></p>
           <h3>{{products.product}} {{products.brand}}</h3><br>
-          <h5>{{products.description}}</h5><br>
+          <h5>{{products.description}}</h5>
         
           <a href="#"> <span>Availibility</span> : In Stock</a><br>
           <h5 style="color: green;">Free Shipping <s style="color: gray;" class="">40</s></h5><br>
-
-          <label for="" >Quantity : </label>
-          <input type="number" class="qty" id="qty" value="1" placeholder="Select Quantity" min="1" ><br><br>
           
-          <input type="text" class="total" id="total" placeholder="Total" value="$ {{products.selling_price}}" style="border: none; font-size: 21px;"><br><br>
+          <!-- cart ilkii data varan ayitii -->
+          <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-          <div class="card-area">
-            <h4><s style="color: gray;" class="total"  >{{products.landing_price}}</s>   <span style="margin-left: 20px;" class="total" > ${{products.selling_price}}</span></h4>
-
-          </div><br>
-          
-
-          
-          {% if products.brand.offer %}
-          <h4 style="color: rgb(32, 189, 32);">{{ products.brand.offer }}% off</h4>
-          {% else %}
-            <h6>No current offers</h6>
-          {% endif %}
-          
-          <input type="text" class="price" id="price" value="{{products.selling_price}}" style="display: none;"><br><br>
-          
-        
-          <div class="card-area">
-            <a href=""><button class="cartbtn">Buy Now</button></a>
-
-
-            <div class="buynow">
-              <a  href="{% url 'frntnd:addcart' products.id%}"><button class="buybtn" style="margin-left: 300px;"> goto CART</button></a>
+            <label for="" >Quantity : </label>
+            <input type="number" name="quantity" class="qty" id="qty" value="1" placeholder="Select Quantity" min="1" ><br><br>
+            <!-- <input type="text" name="price" class="total" id="total" placeholder="Total" value="$. {{products.selling_price}}" style="border: none; font-size: 21px;"><br><br> -->
+            
+            <input type="hidden" name="prodt" value="{{ product.id }}">
+            <div class="card-area">
+              <h4><s style="color: gray;"   >{{products.landing_price}}</s>   <span style="margin-left: 20px;" >           
+                  <input type="text" name="price" class="total" id="total" placeholder="Total" value="$. {{products.selling_price}}" style="border: none;"></span></h4>
             </div>
+          
+            {% if products.brand.offer %}
+            <h4 style="color: rgb(32, 189, 32);">{{ products.offer }}% off</h4>
+            {% else %}
+              <h6>No current offers</h6>
+            {% endif %}
+            
+            <input type="text" class="price" id="price" value="{{products.selling_price}}" style="display: none;"><br><br>
+            
+            <button type="submit" class="cartbtn">Cart</button>
+            <div class="card-area">
+          
 
-          </div>
+              <div class="buynow">
+                <!-- <button type="submit" class="buybtn" style="margin-left: 300px; cursor: pointer;">Buy Now</button> -->
+                <a  href="{% url 'frntnd:addcart' products.id %}"><button type="submit" class="buybtn" style="margin-left: 300px; cursor: pointer;">Buy Now</button></a>
+              </div>
+            </div>
         
+
+          </form>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-
-</script>
 
 <style>
   

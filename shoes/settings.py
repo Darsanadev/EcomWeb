@@ -136,6 +136,7 @@ EMAIL_HOST_PASSWORD = 'zaze jnlq csiv gpvr'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+LOGIN_URL = 'frntnd:userlogin'
 
 
 # Default primary key field type

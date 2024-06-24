@@ -25,14 +25,14 @@ urlpatterns = [
     path('otpvalidate/', views.otpvalidate, name='otpvalidate'),
   # path('simple_mail/', views.simple_mail, name='simple_mail')
     path('apps/', views.apps, name='apps'),
-
+    
     
     path('contact/', views.contact, name='contact'),
     path('whishlist/', views.whishlist, name='whishlist'),
     path('cart/', views.cart, name='cart'),
-    path('cartremove/<int:id>', views.cartremove, name='cartremove'),
-    path('addcart/<int:id>', views.addcart, name='addcart'),
+    path('cartremove/<int:id>/', views.cartremove, name='cartremove'),
+    path('addcart/<int:product_id>/', views.addcart, name='addcart'),
     path('checkout/', views.checkout, name='checkout'),
-
+    
     
 ]

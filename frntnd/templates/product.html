@@ -95,7 +95,7 @@
                         <a class="nav-link" href="{% url 'frntnd:home' %}">Product Checkout</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="{% url 'frntnd:home' %}">Shopping Cart</a>
+                        <a class="nav-link" href="{% url 'frntnd:cart' %}">Shopping Cart</a>
                       </li>
                     </ul>
                   </li>
@@ -163,8 +163,6 @@
   </header>
   <!--================Header Menu Area =================-->
 
-
-
   
   <!--================ Inspired Product Area =================-->
   
@@ -182,7 +180,7 @@
       <div class="row">
 
         {% for products in pro %}
-          {% if products.brand.is_listed %}
+          {% if products.brand.is_listed and products.is_listed %}
           <div class="col-lg-3 col-md-6">
             <div class="single-product">
               <div class="product-img">
@@ -195,15 +193,16 @@
                   <a href="#">
                     <i class="ti-heart"></i>
                   </a>
-                  <a href="">
+                  <a href="{% url 'frntnd:cart' %}">
                     <i class="ti-shopping-cart"></i>
                   </a> 
                 </div> 
               </div> 
               <div class="product-btm"> 
                 <a href="#" class="d-block"> 
-                  <h4>{{products.product}}</h4>  
+                  <h4>{{products.product}} / {{products.brand}}</h4>  
               </a>
+             
                 <div class="mt-3">
                   
                   <span class="mr-4">$ {{products.selling_price}}</span>
@@ -211,13 +210,12 @@
 
                 </div>
 
-                {% if products.brand.offer %}
-                <h5 style="color: rgb(32, 189, 32);">{{ products.brand.offer }}% off</h5>
+                {% if products.great_offer %}
+                <h5 style="color: rgb(32, 189, 32);">{{ products.great_offer }}% off</h5>
                 {% else %}
                   <h6>No current offers</h6>
                 {% endif %}
 
-              
 
               </div>
             </div>

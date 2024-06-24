@@ -1,1 +1,392 @@
-<h1>Checkout</h1>
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="icon" href="img/favicon.png" type="image/png" />
+  <title>EcomWebste</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% static 'Home/css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/linericon/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/font-awesome.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/themify-icons.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/flaticon.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/owl-carousel/owl.carousel.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/lightbox/simpleLightbox.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/nice-select/css/nice-select.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/animate-css/animate.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/vendors/jquery-ui/jquery-ui.css' %}" />
+  <!-- main css -->
+  <link rel="stylesheet" href="{% static 'Home/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'Home/css/responsive.css' %}" />
+</head>
+
+<body style="background-color: rgb(245, 241, 241);">
+
+<!--  
+
+    # function for cart_view
+
+   
+    def cart_view(request):
+        if request.user.is_authenticated:  
+            cart_items = Cart.objects.filter(user=request.user)
+            total_quantity = sum(item.quantity for item in cart_items)
+            total_price = sum(item.total_price() for item in cart_items) 
+            return render(request, 'userprofile/usercart.html', {'cart_items': cart_items,'total_quantity': total_quantity, 'total_price': total_price})
+        else:
+            return redirect('userlogin')
+    
+    # function for add_to_cart 
+    
+    def add_to_cart(request, product_id):
+        if request.method == 'POST':
+            if not request.user.is_authenticated:
+                return redirect('userlogin')
+    
+            product = get_object_or_404(Product, pk=product_id)
+            max_quantity = product.stock  # Maximum quantity available for the product
+    
+            requested_quantity = int(request.POST.get('quantity', 1))
+    
+            if requested_quantity > max_quantity:
+                requested_quantity = max_quantity  # Limit the quantity to the maximum available
+    
+            # Calculate the discounted price
+            discounted_price = product.get_discounted_price() 
+    
+            # Check if the item already exists in the cart
+            cart_item, created = Cart.objects.get_or_create(
+                user=request.user,
+                product=product,
+                defaults={'selling_price': discounted_price}  # Set the discounted price
+            )
+    
+            if not created:  # Item already exists in the cart
+                return redirect('cartview')
+    
+            # If the item is not already in the cart, proceed to add it
+            cart_item.quantity = requested_quantity
+            cart_item.save()
+    
+            return redirect('cartview')
+        
+    
+    # function  for increase qty 
+    
+    def update_cart_item_quantity(request, item_id, quantity):
+        try:
+            cart_item = Cart.objects.get(id=item_id, user=request.user)
+            cart_item.quantity = quantity
+            cart_item.save()
+            return JsonResponse({'success': True, 'message': 'Cart item quantity updated successfully'})
+        except Cart.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Cart item not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}) 
+        
+    
+    # function for delete from the cart 
+   
+    def delete_item_from_cart(request, item_id):
+        try:
+            cart_item = Cart.objects.get(id=item_id, user=request.user)
+            cart_item.delete() 
+            return JsonResponse({'message': 'Item deleted successfully'})
+        except Cart.DoesNotExist:
+            return JsonResponse({'error': 'Item not found'}, status=404)
+    
+    # function for delete all items in cart
+        
+    @login_required
+    @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+    @never_cache
+    def clear_cart(request):
+        if request.method == 'POST':
+            cart_items = Cart.objects.filter(user=request.user)
+            cart_items.delete()
+            response_data = {'success': True, 'message': 'Your cart has been cleared successfully.'}
+            return JsonResponse(response_data)
+        else:
+            response_data = {'success': False, 'error': 'Invalid request method.'}
+            return JsonResponse(response_data, status=400)
+    
+    
+    # function for check_outpage  
+    
+    @login_required
+    def checkout_page(request):
+        user = request.user
+        user_profile_address = UserProfile.objects.filter(user=user).first()
+        shipping_addresses = Address.objects.filter(user_profile=user_profile_address)
+    
+        if request.method == 'POST' and 'product_id' in request.POST:
+            product_id = request.POST.get('product_id')
+            quantity = int(request.POST.get('quantity', 1))
+            product = Product.objects.get(pk=product_id)
+    
+            existing_item = Cart.objects.filter(user=user, product=product).first()
+    
+            if existing_item:
+                existing_item.quantity = F('quantity') + quantity
+                existing_item.save()
+            else:
+                new_item = Cart(user=user, product=product, quantity=quantity, selling_price=product.selling_price)
+                new_item.save()
+    
+            return redirect('checkout_page')
+    
+        usercart = Cart.objects.filter(user=user)
+        
+        total_price_list = []
+        for item in usercart:
+            total_price_list.append(item.quantity * item.selling_price)
+        total_price = sum(total_price_list)
+    
+        # Calculate total price for each item
+        for cart_item in usercart:
+            cart_item.total_price = cart_item.quantity * cart_item.selling_price
+    
+        context = {
+            'user': user,
+            'userprofile_address': user_profile_address,
+            'cart_items': usercart,
+            'shipping_addresses': shipping_addresses,
+            'total_price': total_price,
+        }
+        return render(request, 'userprofile/checkout.html', context)
+
+
+ -->
+
+
+
+
+
+
+
+
+<div class="row" style="margin-top: 50px;">
+    <div class="col-md-6" >
+        <h1>Checkout</h1><br><br>
+
+        <div style="margin-left: 100px;">
+            {% for crt in check %}
+            
+           
+            <input type="text" id="price" value="{{crt.selling_price}}" >
+        
+
+        </div>
+
+<div class="cart-area">
+  <div class="container">
+    <div class="col-md-6">
+    
+    <div class="leftside">
+      <div class="cartitem">
+
+      
+
+        <div class="img">
+          <a><img src="{{crt.image.url}}" class="imgg" alt=""></a>
+        </div>
+        <div class="konjmthalli">
+            <h4>{{ crt.product }}</h4>
+        
+           <input type="hidden" id="price" value="{{crt.selling_price}}" >  <!-- this for geting the one produt pricee   -->
+          
+          <div class="card-area">
+            
+                <input type="hidden" id="price" value="{{crt.landing_price}}" >        
+        <input type="hidden" id="price" value="{{crt.selling_price}}" >
+
+        <input type="number" name="quantity" id="qty" value="1" min="1"><br><br>
+        <input type="number" min="1" value="1" id="qty" name="quantity" maxlength="10">
+        <h5>Total : <input name="total"  value="{{crt.selling_price}}"  id="total" >value=$ {{crt.selling_price}} </h5><br><br>
+          </div>
+           
+         </div>
+        <hr>
+        
+
+      <a href="{% url 'frntnd:checkout' %}"><button class="orderbtn">PlAceOrDeR</button></a>
+      {% endfor %}
+      </div>
+    <style>
+        
+  .container{
+    left: 10px;
+    right: 10px;
+    position: relative;
+
+  }
+  .cartitem{
+    width: 700px;
+    height: auto;
+    margin: 10px;
+    padding: 20px;
+    margin-left: -130px;
+    background-color: white;
+    position: relative;
+
+  }
+
+  .imgg{
+    width: 130px;
+    height: 140px;
+    margin-left: 20px;
+  }
+
+  .qtyy{
+    width: 80px;
+    height: 33px;
+    margin-left: -110px;
+
+  }
+  .btnn{
+    border: none;
+    font-size: 21px;
+    background: none;
+    margin-left: 20px;
+
+  }
+.konjmthalli{
+  margin-left: 250px;
+  margin-top: -135px;
+
+}
+.order-btn{
+            background-color: orange;
+            border: none;
+            padding: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: -10px;
+            width: 290px;
+            height: 50px;
+            color: black;
+            margin-left: 600px;
+        }
+
+  .orderbtn:hover{
+      color: white;
+    }
+    
+.orderbtn{
+  width: 160px;
+  height: 50px;
+  background-color: orange;
+  font-size: 21px;
+  border-radius: 4px;
+  border: none;
+  margin-left: 500px;
+  position: sticky;
+  cursor: pointer;
+
+
+}
+    </style>
+
+
+
+
+
+
+       
+        <script src="../jquery-3.7.1.min.js"></script>
+        
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        
+        <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
+     
+        <script>
+            $(document).ready(function(){
+                $("#qty").change(function(){
+                    x = document.getElementById("qty").value;
+                    y = document.getElementById("price").value;
+                    result = x*y;
+                    document.getElementById("total").value = result;
+                })  
+            })
+            
+        </script>
+
+    </div>
+
+    <div class="col-md-6">
+        <div class="coupondiv">
+            <div class="coupon" style="top: 30px; left: 20%; position: absolute; text-align: center;">
+                <h2>Coupon Code</h2>
+                <p>Enter you coupon code if you are once</p><br>
+                <form action="">
+                    <input type="text" name="" placeholder="Coupon code">
+                    <button class="aplybtn">Apply</button><br><br>
+                    <a href="" style="color: rgb(10, 190, 10); font-size: 18px;">Show all coupons</a>
+                </form>
+        
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .coupondiv{
+        position: relative;
+        width: 475px;
+        height: 300px;
+        border: solid rgb(230, 224, 224);
+        background-color: white;
+        text-align: center;
+        margin-left: 111px;
+    }
+    .aplybtn{
+    
+        width: 100px;
+        height: 35px;
+        font-size: 18px;
+
+    }
+    .aplybtn:hover{
+        background-color: rgb(13, 219, 13);
+        color: white;
+        border: none;
+    }
+    .coupon input{
+        width: 200px;
+        height: 35px;
+        font-size: 17px;
+        padding-left: 12px;
+    }
+</style>
+
+
+
+
+
+
+
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="{% static 'Home/js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'Home/js/popper.js' %}"></script>
+  <script src="{% static 'Home/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'Home/js/stellar.js' %}"></script>
+  <script src="{% static 'Home/vendors/lightbox/simpleLightbox.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/nice-select/js/jquery.nice-select.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/isotope/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/isotope/isotope-min.js' %}"></script>
+  <script src="{% static 'Home/vendors/owl-carousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'Home/js/jquery.ajaxchimp.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/counter-up/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'Home/vendors/counter-up/jquery.counterup.js' %}"></script>
+  <script src="{% static 'Home/js/mail-script.js' %}"></script>
+  <script src="{% static 'Home/js/theme.js' %}"></script>
+
+
+</body>
+</html>

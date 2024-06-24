@@ -118,10 +118,10 @@
                     {% endif %}
                   </li>
                   
-                 
+                  
                 </ul>
               </div>
-            
+              
               <div class="col-lg-5 pr-0">
                 <ul class="nav navbar-nav navbar-right right_nav pull-right">
                   <li class="nav-item">
@@ -157,75 +157,115 @@
 
 <body>
 
+
 <!--  Cart area   -->
-{% for crt in prodt %}
+
+{% if produt %}
 <div class="cart-area">
   <div class="container">
     <div class="col-md-6">
     
     <div class="leftside">
       <div class="cartitem">
+
+      {% for crt in produt %}     
+
         <div class="img">
-          <a><img src="{{crt.image.url}}" class="imgg" alt=""></a>
+          <a href="{% url 'frntnd:product' %}"><img src="{{crt.image.url}}" class="imgg" alt=""></a>
         </div>
         <div class="konjmthalli">
-          <h4>{{ crt.product }}</h4> 
+            <h4>{{ crt.product }}</h4>
+            <h5>{{crt.description}}</h5>
+        
+           <input type="hidden" id="price" value="{{crt.selling_price}}" >  <!-- this for geting the one produt pricee   -->
+           
+           
+          <div class="card-area">
+            <h4><s style="color: gray;" class="" >$ {{ crt.landing_price }}</s>  
+              <span style="margin-left: 20px;" > 
+              <input type="text" name="total"  value= "$ {{ crt.selling_price}}"  id="total" style="border: none;" ></span>
+            </h4>
+          </div>
           
-          <h5>{{crt.description}}</h5><br>
-          
-          
-          {% if brand.offer %}
-          <h5 style="color: rgb(32, 189, 32);">{{ crt.brand.offer }}% off</h5>
+          {% if crt.offer %}
+          <h4 style="color: rgb(32, 189, 32);">{{ crt.offer }}% off</h4>
           {% else %}
             <h6>No current offers</h6>
           {% endif %}
+       
 
-          <input type="text" id="price" value="{{crt.selling_price}}" style="display: none;">
-          
-          <div class="card-area">
-            <h4><s style="color: gray;" class="" >{{ crt.landing_price }}</s>  
-              <span style="margin-left: 20px;" id="total"> {{crt.selling_price}} </span></h4>
+          <h5 style="color: rgb(11, 149, 11);">Free Shipping <s style="color: gray;" class="">40</s></h5>
+          <input type="number" min="1" value="1" id="qty" name="quantity" maxlength="10" style="width: 70px;">
+          <a href="cartremove/{{crt.id}} " class="btnn">Remove</a>
           </div>
-           
-          <h5 style="color: green;">Free Shipping <s style="color: gray;" class="">40</s></h5>
-
-          <input type="number" min="1" value="1" id="qty" minlength="10">
-          <a href="cartremove/{{crt.id}}" class="btnn">Remove</a>
-        </div>
         <hr>
         
+        
+
       <a href="{% url 'frntnd:checkout' %}"><button class="orderbtn">PlAceOrDeR</button></a>
+      
       </div>
     
 <!--      right side amount div  -->      
-
+    
     <div class="rightside">
       <div class="amounts">
         <div class="sentance">
-          <h4 style="color: grey;">PRICE DETAILS</h4>
+          <h4 style="color: grey;">PRICE DETAILS OF CART</h4>
           <hr>
           <h5>Price <span>4</span></h5><br>
           <h5>Discount</h5><br>
-          <h5>Delivery Charge</h5><br>
+          <h5>Quantity</h5><br>
+          
           <hr>
           <h4>Total Amount </h4>
 
         </div>
-        <div class="money">
-    
-          <h4 class="" id="">{{crt.selling_price}}</h4><br>
-
+        <div class="amount">
+          <h4 class="" id="">${{crt.selling_price}}</h4><br>
           <h4>6{{crt.offer}}</h4><br>
-          <h5 style="color: green;">Free Shipping <s style="color: gray;" class=""><br>40</s></h5><br><br>
+          <h4>1{{crt.quantity}}</h4><br>
+          <hr>
           <h4 id="" class="">555</h4>
 
         </div>
       </div>
     </div>
+        
+          {% endfor %}
+
+      
+   
+       
+    <script src="../jquery-3.7.1.min.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
+ 
+    <script>
+        $(document).ready(function(){
+            $("#qty").change(function(){
+                x = document.getElementById("qty").value;
+                y = document.getElementById("price").value;
+                result = x*y;
+                document.getElementById("total").value = result;
+            })  
+        })
+        
+    </script>
+
+
+  </div>
+  </div>
   </div>
 </div>
-{% endfor %}
-<!-- 
+
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+
 <script>
     $(document).ready(function(){
         $("#qty").change(function(){
@@ -235,9 +275,8 @@
             document.getElementById("total").value = result;
         })
     })
-
-</script> -->
-
+  
+</script> 
 
 <!-- js to quanty inc price also inc -->
 
@@ -267,8 +306,6 @@ $(document).ready(function(){
 </script>
 
 
-
-
 <style>
   /* left side */
 
@@ -279,7 +316,7 @@ $(document).ready(function(){
 
   }
   .cartitem{
-    width: 900px;
+    width: 700px;
     height: auto;
     margin: 10px;
     padding: 20px;
@@ -298,15 +335,21 @@ $(document).ready(function(){
   .qtyy{
     width: 80px;
     height: 33px;
-    margin-left: -80px;
+    margin-left: -110px;
 
   }
   .btnn{
     border: none;
     font-size: 21px;
     background: none;
-    margin-left: 20px;
+   
+    margin-left: 71px;
 
+  }
+  .btnn:hover{
+    background-color: rgb(255, 50, 50);
+    color: white;
+    padding: 7px;
   }
 .konjmthalli{
   margin-left: 250px;
@@ -331,13 +374,13 @@ $(document).ready(function(){
     }
     
 .orderbtn{
-  width: 200px;
-  height: 60px;
+  width: 160px;
+  height: 50px;
   background-color: orange;
-  font-size: 25px;
+  font-size: 21px;
   border-radius: 4px;
   border: none;
-  margin-left: 550px;
+  margin-left: 500px;
   position: sticky;
   cursor: pointer;
 
@@ -346,7 +389,7 @@ $(document).ready(function(){
   /* right side  */
   .amounts{
     width: 400px;
-    margin-left: 55%;
+    margin-left: 50%;
     margin-top: -250px;
     height: 350px;
     background-color: white;
@@ -356,9 +399,9 @@ $(document).ready(function(){
     z-index: 8px;
 
   }
-  .money{
+  .amount{
     margin-left: 270px;
-    margin-top: -227px;
+    margin-top: -219px;
 
   }
 </style>
@@ -382,14 +425,5 @@ $(document).ready(function(){
   <script src="{% static 'Home/js/theme.js' %}"></script>
 
 
-
-
-
-
-
-
-
-
 </body>
-
 </html>

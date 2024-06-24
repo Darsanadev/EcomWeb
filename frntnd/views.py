@@ -10,23 +10,43 @@ from datetime import datetime, timedelta
 import smtplib
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from django.contrib.auth import authenticate
 
 
 # Create your views here.  
 
 def home(request):
-    cate = Category.objects.all()
-    brand = Brand.objects.all()
-    pro = Product.objects.all()
-    register = Register.objects.all()
+    cate = Category.objects.all() 
+    brand = Brand.objects.all() 
+    pro = Product.objects.all() 
+    register = Register.objects.all() 
     return render(request, 'home.html', {'cate': cate, 'brand': brand, 'pro': pro, 'register':register})
 
 
-def product(request):
-    cate = Category.objects.all()
-    brand = Brand.objects.all()
-    pro = Product.objects.all()
-    return render(request, 'product.html', {'cate': cate, 'brand': brand, 'pro': pro})
+def product(request): 
+    pro = Product.objects.all() 
+    for produt in pro:
+        produt_brand = produt.brand.offer
+        if produt.brand.offer > produt.offer:
+            produt.great_offer = produt_brand
+        else:
+            produt.great_offer = produt.offer
+    return render(request, 'product.html', {'pro': pro})
+
+
+# def product(request): 
+#     print("hello") 
+#     products = Product.objects.all() 
+#     for product in products: 
+#         product_brand = product.brand
+#         product_offer = product.offer if product.offer is not None else 0
+#         brand_offer = product_brand.offer if product_brand.offer is not None else 0
+        
+#         if brand_offer > product_offer:
+#             product.great_offer = brand_offer
+#         else:
+#             product.great_offer = product_offer
+#     return render(request, 'product.html', {'products': products})
 
 
 def category(request, catname):
@@ -55,7 +75,7 @@ def singleproduct(request, id):
 # get() - return single object and it's not iterable
 
 
-# Login views  
+# Login views                                        
 
 
 def register(request):
@@ -73,7 +93,7 @@ def userlogin(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         userlogin = Register.objects.filter(username = username, password = password).exists()
-
+        
         if userlogin:
             request.session['username'] = username
             request.session['password'] = password
@@ -96,17 +116,17 @@ def forgotpass(request):
         email = request.POST.get('email')
         user = Register.objects.filter(email=email)
 
-        request.session['regemail'] = email
+        request.session['regemail'] = email   
 
         if user.exists():
             link = "http://127.0.0.1:8000/frntnd/newpassword/"
-            
+             
             send_mail(
                 subject='Reset Your Password ',
-                message=f' Hey Your reset password link  {link}  click the link to reset password',
+                message=f' Hey Your reset password link  {link}  click the link to reset password. valid only for next 1 hour Njoy... ',
                 from_email="darshuuu11@gmail.com",
                 recipient_list=[email])
-        
+             
         else:
             return redirect( 'frntnd:forgotpassword')
         
@@ -118,7 +138,7 @@ def newpassword(request):
         email = request.session.get('regemail')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
-        
+
         if password1 == password2:
             user = Register.objects.get(email=email)
             user.password=password1
@@ -161,10 +181,10 @@ def otpgenerate(request):
                 message=f' Hey Your OTP :  {otp} enjoyy hav a gud day',
                 from_email="darshuuu11@gmail.com",
                 recipient_list=[mailid])
-           
+            
             return redirect('frntnd:otpvalidate')
     return render( request, 'otpgenerate.html')     
-
+    
 
 def otpvalidate(request):
     if request.method == 'POST':
@@ -206,7 +226,7 @@ def account(request):
     accounts = Useraccount.objects.filter(name = request.session['username'])
 
     return render(request, 'account.html', {'accounts': accounts})
-
+                      
 
 def editaccnt(request, id):
     acc = Useraccount.objects.get(id=id)
@@ -233,36 +253,191 @@ def deleteaccount(id):
     accound = Useraccount.objects.get(id=id)
     accound.delete()
     return redirect('frntnd:account')
-  
+# LAPTOP-MCU76LIH 5556
 
 
-    #  cart db ilkii evdna data varniii     
-@login_required
+
+def addcart(request, product_id):
+    produt = None
+    if request.method=='POST':
+        print("POST request received")
+        if request.user.is_authenticated:
+            print(" valid User ")
+            
+            product = get_object_or_404(Product, id=product_id)
+            quantity=int(request.POST.get('quantity'))
+            print(f"Quantity: {quantity}, Price: {price}")
+            # cart = Cart(user=user, quantity=quantity, prodt=produt)
+            # cart.save()
+
+            # check the product is alrdy in cart increase the quantity of product 
+
+            cart_item, created = Cart.objects.get_or_create(
+                prodt=product, user=request.user, defaults={'quantity': quantity, 'price': product.price, 'total': product.price * quantity})
+   
+            if created:
+                cart_item.quantity += quantity 
+                return redirect('frntnd:cart')
+            else:
+                cart_item.quantity = quantity 
+                cart_item.total = cart_item.quantity * cart_item.price
+            cart_item.save()
+            return HttpResponse("Product added to cart.")
+
+        else:
+            return redirect('frntnd:userlogin')
+    else:
+        produt = Product.objects.filter(id=product_id)
+    return render(request, 'cart.html', {'produt': produt})
+
+
+
+# def addcart(request, product_id):
+#     if request.method == 'POST':
+#         quantity = request.POST.get('quantity')
+#         price = request.POST.get('price')
+#         total = request.POST.get('total')
+#         cartt = Cart(quantity=quantity, price=price, total=total)
+#         cartt.save()
+#         produt = Product.objects.filter(id=product_id)
+#         produt.save()
+#     return render(request, 'cart.html')
+
+
+
+
 def cart(request):
-    prodt = Product.objects.filter(user= request.session['username'])
-    return render(request, 'cart.html', {'prodt': prodt})  
+    carts=Cart.objects.all()
+    return render(request, 'cart.html', {'carts': carts})
 
 
-def addcart(request, id):
-    product = get_object_or_404(Product, id=id)
-    cartitem = Cart.objects.get_or_create(prodt=product)
-    return redirect('frntnd:cart',  {'product':product, 'cartitem':cartitem})
+# def addcart(request, product_id):
+#     produt=None
+#     if request.method=='POST':
+
+#         if request.user.is_authenticated:
+                
+#             user = request.user 
+#             produt = Product.objects.filter(id=product_id)
+         
+#             quantity = request.POST.get('quantity') # Default to 1 if not provided
+            
+#             price = request.POST.get('price')
+#             cart_item, created = Cart.objects.get_or_create(product=product, user=user)
+        
+#             cart_item = Cart.objects.create(
+#                prodt= produt, price=price)
+#             cart_item.save()
+
+
+#             # Check if the product is already in the cart
+#             cart_item = Cart.objects.filter(produt=produt, user=request.user).first()
+                
+#             if cart_item:
+#                 cart_item.quantity += 1
+#                 cart_item.save()
+#             else:
+#                 cart_item = Cart(produt=produt, user=request.user, quantity=1)  
+#                 cart_item.save() 
+
+#         # cart_item, created = Cart.objects.get_or_create(product=product, user=user)
+        
+#         # if not created:
+#         #     # If the cart item already exists, update the quantity
+#         #     cart_item.quantity += quantity
+#         # else:
+#         #     # If it's a new cart item, set the quantity and price
+#         #     cart_item.quantity = quantity
+#         #     cart_item.price = price
+#         #     cart_item.save()
+
+#         return redirect('frntnd:cart')
+    
+       
+#     cart_item = Product.objects.filter(id=product_id)
+#     # car = Cart( prodt=produt)
+#     # car.save()
+#     return render(request, 'cart.html',  {'cart_item':cart_item})
+
+
+# def addcart(request, product_id):
+#     produt=None
+#     if request.method=='POST':
+
+        # user=request.user
+        # quantity = int(request.POST.get('quantity', 1)) # Default to 1 if not provided
+        # price = request.POST.get('price')
+        # cart = Cart(quantity=quantity, price=price)
+        # cart.save()
+        # price = float(request.POST.get('price', product.price))  # Use product price if not provided
+        
+        # # Check if the user is authenticated
+        # if request.user.is_authenticated:
+        #     # Check if the product is already in the cart for the user
+        #     cart_item, created = Cart.objects.get_or_create(
+        #         user=request.user,
+        #         prodt=product,
+        #         defaults={'quantity': quantity, 'price': price, 'total': price * quantity}
+        #     )
+
+#         if request.user.is_authenticated: 
+#             print("valid user") 
+#             produt = get_object_or_404(Product, id=product_id) 
+#             cart = Cart(produt=produt) 
+#             cart.save()
+            
+#             # Check if the product is already in the cart
+#             cart_item = Cart.objects.filter(produt=produt, user=request.user).first()
+            
+#             if cart_item:
+#                 cart_item.quantity += 1
+#                 cart_item.save()
+#             else:
+#                 cart_item = Cart(produt=produt, user=request.user, quantity=1)  
+#                 cart_item.save()
+
+#             # if the product is alrdy in cart increase the quantity of product 
+#             return redirect('frntnd:cart', product_id=product_id)  
+             
+#         else:
+#             return redirect('frntnd:userlogin')   
+#     return render(request, 'cart.html',  {'produt':produt})
     
 
+def quantity(request):
+
+    if request.method=="POST":
+        total = price*quantity
+    return render(request, 'cart.html')
+
+    
+# def cart(request):
+#     if request.user.is_authenticated:
+#         produt = Cart.objects.filter(user= request.user) 
+
+#     else:
+#         # return HttpResponse("Nothng is heree")
+#         return redirect('frntnd:userlogin')
+#     return redirect('frntnd:cart', {'produt': produt}) 
+
+
+
 def cartremove(id):
-    cartt = Cart.objects.get(id=id) 
+    # cartt = Cart.objects.get(id=id) 
+    cartt = get_object_or_404(Cart, id=id)
     cartt.delete()
     return redirect('frntnd:cart')
 
-@login_required
+
 def checkout(request):
+   
     return render(request, 'checkout.html')
 
-@login_required
+
 def contact(request):
     return render(request, 'contact.html')
 
-@login_required
+
 def whishlist(request):
     return render(request, 'whishlist.html')
 
