@@ -5,6 +5,7 @@ from . import views
 app_name = 'frntnd'
 
 urlpatterns = [
+    
     path('home/', views.home, name='home'),
     path('product/', views.product, name='product'),
     path('category/<catname>/', views.category, name='category'), # catname is an argument 
@@ -34,5 +35,5 @@ urlpatterns = [
     path('addcart/<int:product_id>/', views.addcart, name='addcart'),
     path('checkout/', views.checkout, name='checkout'),
     
-    
+
 ]
