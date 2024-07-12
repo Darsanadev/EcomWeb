@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% extends 'index.html' %}
+{% block contend %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="text-align: center;">
+    <form action="" method="post" enctype="multipart/form-data" style="margin-left: 20%;">
+        {% csrf_token %}
+        <h1>ADD COUPON </h1>
+        <input type="text" name="coupon" value="{{coupon}}" placeholder="Coupon code"><br><br>
+        <input type="number" name="discount" value="{{discount}}" placeholder="Amount"><br><br>
+        <input type="date" name="valid_from " value="{{valid_from}}" placeholder="valid_from"><br><br>
+        <input type="date" name="valid_to " value="{{valid_to}}" placeholder="valid_to"><br><br>
+       
+        <button type="submit">Done</button>
+
+    </form>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
+
+    {% if messages %}
+        {% for i in messages %}
+            {% if i.tags == 'warning' %}
+                <script>
+                    swal('{{i}}', '', 'warning')
+                </script>
+            {% elif i.tags == 'error' %}
+                <script>
+                    swal('{{i}}', '', 'error')
+                </script>
+            {% elif i.tags == 'success' %}
+                <script>
+                    swal('{{i}}', '', 'success')
+                </script>
+            {% else %}
+                <script>
+                    swal('{{i}}', '', 'info')
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+</body>
+</html>
+{% endblock %}
+
+ 

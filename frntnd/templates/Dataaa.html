@@ -155,148 +155,61 @@
   </header>
   <!--================Header Menu Area =================-->  
 
-<body>
+  <body>
 
 
-<!--  Cart area   -->
-
-{% if produt %}
-<div class="cart-area">
-  <div class="container">
-    <div class="col-md-6">
+    <!--  Cart area   -->
     
-    <div class="leftside">
-      <div class="cartitem">
-
-      {% for crt in produt %}     
-
-        <div class="img">
-          <a href="{% url 'frntnd:product' %}"><img src="{{crt.image.url}}" class="imgg" alt=""></a>
-        </div>
-        <div class="konjmthalli">
-            <h4>{{ crt.product }}</h4>
-            <h5>{{crt.description}}</h5>
+    <div class="cart-area">
+      <div class="container">
+        <div class="col-md-6">
         
-           <input type="hidden" id="price" value="{{crt.selling_price}}" >  <!-- this for geting the one produt pricee   -->
-           
+        <div class="leftside">
+          <div class="cartitem">
+    
+          {% for crt in prdt %}     
+    
+            <div class="img">
+              <a href="{% url 'frntnd:product' %}"><img src="{{crt.image.url}}" class="imgg" alt=""></a>
+            </div>
+            <div class="konjmthalli">
+                <h4>{{ crt.product }}</h4>
+                <h5>{{crt.description}}</h5>
             
-          <div class="card-area">
-            <h4><s style="color: gray;" class="" >$ {{ crt.landing_price }}</s>  
-              <span style="margin-left: 20px;" > 
-              <input type="text" name="total"  value= "$ {{ crt.selling_price}}"  id="total" style="border: none;" ></span>
-            </h4>
-          </div>
-          
-          {% if crt.offer %}
-          <h4 style="color: rgb(32, 189, 32);">{{ crt.offer }}% off</h4>
-          {% else %}
-            <h6>No current offers</h6>
-          {% endif %}
-       
-          
-          <h5 style="color: rgb(11, 149, 11);">Free Shipping <s style="color: gray;" class="">40</s></h5>
-          <input type="number" min="1" value="1" id="qty" name="quantity" max="15" maxlength="10" style="width: 70px;">
-          <a href="cartremove/{{crt.id}} " class="btnn">Remove</a>
-          </div>
-        <hr>
-        <hr style="background-color: red;">
-
-      <a href="{% url 'frntnd:checkout' %}"><button class="orderbtn">PlAceOrDeR</button></a>
-      <hr style="color: blue;">
-      </div>
+               <input type="hidden" id="price" value="{{crt.selling_price}}" >  <!-- this for geting the one produt pricee   -->
+               
+                
+              <div class="card-area">
+                <h4><s style="color: gray;" class="" >$ {{ crt.landing_price }}</s>  
+                  <span style="margin-left: 20px;" > 
+                  <input type="text" name="total"  value= "$ {{ crt.selling_price}}"  id="total" style="border: none;" ></span>
+                </h4>
+              </div>
+              
+              {% if crt.offer %}
+              <h4 style="color: rgb(32, 189, 32);">{{ crt.offer }}% off</h4>
+              {% else %}
+                <h6>No current offers</h6>
+              {% endif %}
+           
+              
+              <h5 style="color: rgb(11, 149, 11);">Free Shipping <s style="color: gray;" class="">40</s></h5>
+              <input type="number" min="1" value="1" id="qty" name="quantity" max="15" maxlength="10" style="width: 70px;">
+              <a href="cartremove/{{crt.id}} " class="btnn">Remove</a>
+              </div>
+            <hr>
+            
     
-<!--      right side amount div  -->      
-    
-    <div class="rightside">
-      <div class="amounts">
-        <div class="sentance">
-          <h4 style="color: grey;">PRICE DETAILS OF CART</h4>
-          <hr>
-          <h5>Price</h5><br>
-          <h5>Discount</h5><br>
-          <h5>Quantity</h5><br>
-          
-          <hr>
-          <h4>Total Amount </h4>
-
-          total = price-Discount
-
+          <a href="{% url 'frntnd:checkout' %}"><button class="orderbtn">PlAceOrDeR</button></a>
+          {% endfor %}
+          </div>
         </div>
-        <div class="amount">
-          <h4 class="" id="">{{crt.selling_price}}</h4><br>
-          <h4>{{crt.offer}}</h4><br>
-          <h4>1{{crt.quantity}}</h4><br>
-          <hr>
-          <h4 id="" class="">{{crt.selling_price}}</h4>
-
         </div>
       </div>
     </div>
         
-      {% endfor %}
-      
-    
-       
-    <script src="../jquery-3.7.1.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
-    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
- 
-    <script>
-        $(document).ready(function(){ 
-            $("#qty").change(function(){ 
-                x = document.getElementById("qty").value; 
-                y = document.getElementById("price").value; 
-                result = x*y; 
-                document.getElementById("total").value = result; 
-            })  
-        })
-    </script>
-
-  </div>
-  </div>
-  </div>
-</div>
-
-{% else %}
-    <p>Your cart is empty.</p>
-{% endif %}
-
-<script>
-    $(document).ready(function(){
-        $("#qty").change(function(){
-            x = document.getElementById("qty").value;
-            y = document.getElementById("price").value;
-            result = x*y;
-            document.getElementById("total").value = result;
-        })
-    })
-  
-</script> 
-
-<!-- js to quanty inc price also inc -->
-
-
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-<script>
-
-$(document).ready(function(){
-    $("#qty").change(function(){
-        x = document.getElementById("#qty").value;
-        y = document.getElementById("#price").value;
-        let result = x*y;
-        document.getElementById("#total").value = result;
-    })
-})
-
-</script>
-
-
-<style>
-  /* left side */
-
+    <style>
+        
   .container{
     left: 10px;
     right: 10px;
@@ -374,26 +287,7 @@ $(document).ready(function(){
   
 
 }
-  /* right side  */
-  .amounts{
-    width: 400px;
-    margin-left: 50%;
-    margin-top: -270px;
-    height: 350px;
-    background-color: white;
-    position: fixed;
-    padding: 20px;
-    border-radius: 3px;
-    z-index: 8px;
-
-  }
-
-  .amount{
-    margin-left: 270px;
-    margin-top: -229px;
-
-  }
-</style>
+    </style>
 
   <!--================ start footer Area  =================-->
 

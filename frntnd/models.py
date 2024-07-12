@@ -22,19 +22,21 @@ class Register(models.Model):
     
 
 class Cart(models.Model):  
-    prodt = models.ForeignKey(Product, on_delete=models.CASCADE, default=1) 
-    user = models.ForeignKey(Useraccount, on_delete=models.CASCADE) 
+    prodt = models.ForeignKey(Product, on_delete=models.CASCADE, default=1, blank=True) 
+    # user = models.ForeignKey(Useraccount, on_delete=models.CASCADE, blank=True) 
     orderdate = models.DateTimeField(auto_now_add=True) 
     quantity = models.PositiveIntegerField(default=1) 
     price = models.IntegerField(blank=True, default=1) 
     total = models.IntegerField(null=True, blank=True, default=1) 
     
-    CART_STAGE=0
-    ORDER_CONFIRMED=1
-    ORDER_PROCESSED=2
-    ORDER_DELIVERED=3
-    ORDER_REJECTED=4
-    STATUS_CHOICES = ((ORDER_PROCESSED, "ORDER_PROCESSED"),
-                      (ORDER_DELIVERED, "ORDER_DELIVERED"),
-                      (ORDER_REJECTED, "ORDER_REJECTED"))
-    order_status = models.IntegerField(choices=STATUS_CHOICES, default=CART_STAGE)
+    # CART_STAGE=0
+    # ORDER_CONFIRMED=1
+    # ORDER_PROCESSED=2
+    # ORDER_DELIVERED=3
+    # ORDER_REJECTED=4
+    # STATUS_CHOICES = ((ORDER_PROCESSED, "ORDER_PROCESSED"),
+    #                   (ORDER_DELIVERED, "ORDER_DELIVERED"),
+    #                   (ORDER_REJECTED, "ORDER_REJECTED"))
+    # order_status = models.IntegerField(choices=STATUS_CHOICES, default=CART_STAGE)
+
+# class Order(models.Model):

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from backend . models import Category, Brand, Product
+from backend . models import Category, Brand, Product, Coupon
 from frntnd . models import Useraccount, Cart, Register
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
@@ -28,25 +28,10 @@ def product(request):
     for produt in pro:
         produt_brand = produt.brand.offer
         if produt.brand.offer > produt.offer:
-            produt.great_offer = produt_brand
+           produt.great_offer = produt_brand
         else:
-            produt.great_offer = produt.offer
+           produt.great_offer = produt.offer
     return render(request, 'product.html', {'pro': pro})
-
-
-# def product(request): 
-#     print("hello") 
-#     products = Product.objects.all() 
-#     for product in products: 
-#         product_brand = product.brand
-#         product_offer = product.offer if product.offer is not None else 0
-#         brand_offer = product_brand.offer if product_brand.offer is not None else 0
-        
-#         if brand_offer > product_offer:
-#             product.great_offer = brand_offer
-#         else:
-#             product.great_offer = product_offer
-#     return render(request, 'product.html', {'products': products})
 
 
 def category(request, catname):
@@ -54,7 +39,7 @@ def category(request, catname):
     brand = Brand.objects.all()
       # Filter products based on category name (assuming Category has 'cname' field)
     category = get_object_or_404(Category, cname=catname)
-    # brands = get_object_or_404(Brand, brand=brandname)
+      # brands = get_object_or_404(Brand, brand=brandname)
     pro = Product.objects.filter(category=category)
 
     context = {
@@ -66,16 +51,16 @@ def category(request, catname):
 
 
 def singleproduct(request, id):
-    pro = Product.objects.filter(id=id) 
+    if request.user:
+        pro = Product.objects.filter(id=id) 
+    else:
+        return redirect('frntnd:userlogin')
     return render(request, 'singleproduct.html', {'pro': pro})
 
 # Change Employee.objects.get(id=id) to Employee.objects.filter(id=id)
 
 # "filter() will always give you a QuerySet" - it's iterable
 # get() - return single object and it's not iterable
-
-
-# Login views                                        
 
 
 def register(request):
@@ -117,7 +102,7 @@ def forgotpass(request):
         user = Register.objects.filter(email=email)
 
         request.session['regemail'] = email   
-
+    
         if user.exists():
             link = "http://127.0.0.1:8000/frntnd/newpassword/"
              
@@ -129,7 +114,6 @@ def forgotpass(request):
              
         else:
             return redirect( 'frntnd:forgotpassword')
-        
     return render(request, 'forgotpassword.html') 
    
 
@@ -175,7 +159,7 @@ def otpgenerate(request):
             request.session['storedotp'] = otp   
             request.session['otpcreate_time'] = otptime_str 
             request.session['email'] = mailid  
-             
+              
             send_mail(
                 subject='otp for Login ',
                 message=f' Hey Your OTP :  {otp} enjoyy hav a gud day',
@@ -208,9 +192,6 @@ def otpvalidate(request):
 
 #  User account
 
-def addaccount(request):
-    return render(request)
-
 def account(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -222,7 +203,6 @@ def account(request):
         account = Useraccount(name=name, phone=phone, state=state, city=city, address=address, pin=pin)
         account.save()
         return redirect('frntnd:account')
-
     accounts = Useraccount.objects.filter(name = request.session['username'])
 
     return render(request, 'account.html', {'accounts': accounts})
@@ -255,9 +235,32 @@ def deleteaccount(id):
     return redirect('frntnd:account')
 # LAPTOP-MCU76LIH 5556
 
+def datas(request):
 
+    return render(request, 'datas.html')
+
+
+def cart(request):
+    carts=Cart.objects.all()
+    return render(request, 'cart.html', {'carts': carts})
+
+
+# def addcart(request, product_id):
+#     if request.method == 'POST':
+#         orderdate = request.POST.get('orderdate')
+#         quantity = request.POST.get('quantity')
+#         price = request.POST.get('price')
+#         total = request.POST.get('total')
+#         storecart = Cart(orderdate=orderdate, quantity=quantity, price=price, total=total)
+#         storecart.save()
+
+#     return render(request,  'cart.html')
+
+
+# this is the working cart 
 
 def addcart(request, product_id):
+    print("heyyy ")
     produt = None
     if request.method=='POST':
         print("POST request received")
@@ -291,7 +294,6 @@ def addcart(request, product_id):
     return render(request, 'cart.html', {'produt': produt})
 
 
-
 # def addcart(request, product_id):
 #     if request.method == 'POST':
 #         quantity = request.POST.get('quantity')
@@ -302,13 +304,6 @@ def addcart(request, product_id):
 #         produt = Product.objects.filter(id=product_id)
 #         produt.save()
 #     return render(request, 'cart.html')
-
-
-
-
-def cart(request):
-    carts=Cart.objects.all()
-    return render(request, 'cart.html', {'carts': carts})
 
 
 # def addcart(request, product_id):
@@ -404,11 +399,6 @@ def cart(request):
 #     return render(request, 'cart.html',  {'produt':produt})
     
 
-def quantity(request):
-
-    if request.method=="POST":
-        total = price*quantity
-    return render(request, 'cart.html')
 
     
 # def cart(request):
@@ -429,9 +419,37 @@ def cartremove(id):
     return redirect('frntnd:cart')
 
 
-def checkout(request):
-   
-    return render(request, 'checkout.html')
+def checkout(request ):
+    name = request.user
+    address  = Useraccount.objects.filter(name = request.session['username']) 
+    coupons = Coupon.objects.filter(active=True)
+    apply = couponapply(request)
+    return render(request, 'checkout.html', {'name': name, 'address': address, 'coupons': coupons, 'apply': apply})
+
+def couponapply(request):
+    coupons = Coupon.objects.filter(active=True)
+
+    if request.method == 'POST':
+        inputcoupon = request.POST.get('inpcoupon')
+
+        try:
+            validaa = Coupon.objects.get(coupon=inputcoupon, active=True)
+            total = request.POST.get('total')
+            
+            if total>2000:
+                request.session['validcoupon'] = validaa
+                messages.success(request, 'Coupon applied successfully!')
+            else:
+                messages.error(request, 'Your total amount must be greater than 2000/-. to apply this coupon.')
+        
+        except Coupon.DoesNotExist():
+            messages.error(request, 'Invalid or inactive coupon.')
+
+    return render(request, 'checkout.html', {'coupons': coupons})
+
+
+def userorders(request):
+    return render(request, 'userorders.html')
 
 
 def contact(request):
@@ -473,8 +491,8 @@ def apps(request):
     if request.method=='POST':
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
-        if password1 == password2:
 
+        if password1 == password2:
             return HttpResponse("Heyy rght passwrd") 
         else:
             print("wrong")

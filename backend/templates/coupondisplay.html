@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% extends 'index.html' %}
+{% block contend %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body> 
+        <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="table-responsive pt-3">
+                  <table class="table table-striped project-orders-table">
+                    <thead>
+                      <tr>
+                        
+                        <th>Coupon</th>
+                        <th>Discount price</th>
+                        <th>valid_from</th>
+                        <th>valid_to</th>
+                        <th>Is Active</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for coupon in coponcode %}
+                    
+                    <tr>
+                        <td>{{coupon.coupon}}</td>
+                        <td>{{coupon.discount}}</td>
+                        <td>{{coupon.valid_from}}</td>
+                        <td>{{coupon.valid_to}}</td>
+                        <td>{{coupon.active}}</td>
+
+                        <td>
+
+                         
+                            <a href="couponedit/{{i.id}}">
+                                <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
+                                    Edit
+                                    <i class="typcn typcn-edit btn-icon-append"></i>                          
+                                </button> 
+                            </a>
+                        
+                            <a href="">
+                                <button type="button" class="btn btn-danger btn-sm btn-icon-text">
+                                    Delete
+                                    <i class="typcn typcn-delete-outline btn-icon-append"></i>                          
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                   {% endfor %}
+                    
+                    </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+</body>
+</html>
+{% endblock %}

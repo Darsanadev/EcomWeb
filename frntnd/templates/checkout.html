@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="{% static 'Home/css/responsive.css' %}" />
 </head>
 
-<body style="background-color: rgb(245, 241, 241);">
+<body style="background-color: rgb(251, 251, 251);">
 
 <!--  
 
@@ -74,7 +74,7 @@
     
             return redirect('cartview')
         
-    
+        
     # function  for increase qty 
     
     def update_cart_item_quantity(request, item_id, quantity):
@@ -88,9 +88,9 @@
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}) 
         
-    
+        
     # function for delete from the cart 
-   
+    
     def delete_item_from_cart(request, item_id):
         try:
             cart_item = Cart.objects.get(id=item_id, user=request.user)
@@ -129,16 +129,16 @@
             product = Product.objects.get(pk=product_id)
     
             existing_item = Cart.objects.filter(user=user, product=product).first()
-    
+            
             if existing_item:
                 existing_item.quantity = F('quantity') + quantity
                 existing_item.save()
             else:
                 new_item = Cart(user=user, product=product, quantity=quantity, selling_price=product.selling_price)
                 new_item.save()
-    
+                
             return redirect('checkout_page')
-    
+
         usercart = Cart.objects.filter(user=user)
         
         total_price_list = []
@@ -159,65 +159,213 @@
         }
         return render(request, 'userprofile/checkout.html', context)
 
-
+        
  -->
 
 
-
-
-
-
-
-
-<div class="row" style="margin-top: 50px;">
-    <div class="col-md-6" >
-        <h1>Checkout</h1><br><br>
-
-        <div style="margin-left: 100px;">
-            {% for crt in check %}
-            
-           
-            <input type="text" id="price" value="{{crt.selling_price}}" >
-        
-
+<div class="row">
+    <div class="col-md-6 col-lg-12">
+        <div class="check">
+            <div class="address">
+                {% for account in address %}
+                <table>
+                 
+                    <tr class="innertd">
+                        <h4 style="font-size: 15px;">1.  DELIVERY ADDRESS : </h4>
+                        <td style="font-size: 19px; color: black;">{{account.name}}</td>
+                        <td class="styled-td">{{account.phone}}</td>
+                        <td class="styled-td">{{account.address}}</td>
+                        <td class="styled-td">{{account.city}}, {{account.state}}</td>
+                        <td class="styled-td">{{account.pin}}</td>
+                        <td>  <a href="editaccnt/{{account.id}}"><button  class="edtbtn" onclick="">Edit </button></a>  </td>
+                    </tr>
+                </table>
+                
+                {% endfor %}
+            </div>
         </div>
+        <div class="check" style="height: 200px;">
+            <div class="item" style="padding: 5px;">
+                <h4 style="font-size: 15px;">2.  ORDER SUMMARY</h4>
+                {% for item in produt %}
+                <div class="img">
+                    <a href="{% url 'frntnd:product' %}"><img src="{{item.image.url}}" class="imgg" alt=""></a>
+                </div>
 
-<div class="cart-area">
-  <div class="container">
-    <div class="col-md-6">
+                <div class="konjmthalli">
+                    <h4>{{ item.product }} / {{item.brrand}}</h4>
+                    {% if item.offer %}
+                    <h4 style="color: rgb(32, 189, 32);">{{ item.offer }}% off</h4>
+                    {% else %}
+                    <h6>No current offers</h6>
+                    {% endif %}
+
+                    <div class="card-area">
+                    <h4><s style="color: gray;" class="" >$ {{ item.landing_price }}</s>  
+                        <span style="margin-left: 20px;" > 
+                        <input type="text" name="total"  value= "$ {{ item.selling_price}}"  id="total" style="border: none;" ></span>
+                    </h4>
+                    </div>
+                
+                </div>
+                
+                {% endfor %}
+            </div>
+        </div>
+        <div class="check">
+            <div class="payment" style="padding: 5px;">
+                <h4>3. PAYMENT OPTIONS</h4>
+                <h5>Cash on Delivery</h5>
+                <h5>Pay pall </h5>
+            </div>
+        </div>
+    </div>
+
+  
+
+<div class="col-md-12">
+    <div class="rightse">
+        <div class="amonts">
+            <h4 style="color: grey;">PRICE DETAILS</h4>
+            <hr>
+            <h5>Price</h5><br>
+            <h5>Delivery</h5>
+            <hr>
+            <h4>Total Amount </h4>
+        </div>
+        <div class="prize">
+            <h4>76</h4><br>
+            <h5 style="color: gray;" class=""><s>40</s>  <span style="color: rgb(11, 149, 11);">FREE</span></h5><br>
+           
+
+            <h4>67</h4>
+        </div>
+    </div>
+</div> 
+
+
+
+        
+<!--      right side amount div  -->      
     
-    <div class="leftside">
-      <div class="cartitem">
-
-      
-
-        <div class="img">
-          <a><img src="{{crt.image.url}}" class="imgg" alt=""></a>
-        </div>
-        <div class="konjmthalli">
-            <h4>{{ crt.product }}</h4>
-        
-           <input type="hidden" id="price" value="{{crt.selling_price}}" >  <!-- this for geting the one produt pricee   -->
-          
-          <div class="card-area">
-            
-                <input type="hidden" id="price" value="{{crt.landing_price}}" >        
-        <input type="hidden" id="price" value="{{crt.selling_price}}" >
-
-        <input type="number" name="quantity" id="qty" value="1" min="1"><br><br>
-        <input type="number" min="1" value="1" id="qty" name="quantity" maxlength="10">
-        <h5>Total : <input name="total"  value="{{crt.selling_price}}"  id="total" >value=$ {{crt.selling_price}} </h5><br><br>
-          </div>
-           
-         </div>
+<div class="rightside" style="margin-top: -200px;">
+    <div class="amounts" style="margin-top: -200px;">
+      <div class="sentance">
+        <h4 style="color: grey;">PRICE DETAILS OF CART</h4>
         <hr>
+        <h5>Price</h5><br>
+        <h5>Discount</h5><br>
+        <h5>Quantity</h5><br>
         
+        <hr>
+        <h4>Total Amount </h4>
 
-      <a href="{% url 'frntnd:checkout' %}"><button class="orderbtn">PlAceOrDeR</button></a>
-      {% endfor %}
+        total = price-Discount
+
       </div>
-    <style>
+      <div class="amount">
+        <h4 class="" id="">{{crt.selling_price}}</h4><br>
+        <h4>{{crt.offer}}</h4><br>
+        <h4>1{{crt.quantity}}</h4><br>
+        <hr>
+        <h4 id="" class="">{{crt.selling_price}}</h4>
+
+      </div>
+    </div>
+  </div>
+      
+<!--    
         
+    <div class="col-md-6 col-lg-12">
+        <div class="coupondiv">
+            <div class="coupon" style="top: 30px; left: 20%; position: absolute; text-align: center;">
+                <h2>Coupon Code</h2>
+                <p>Enter you coupon code if you are once</p><br>
+                {% for cupn in coupons %}
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text" name="coupon" placeholder="Coupon code">
+                    <button class="aplybtn">Apply</button><br><br>
+                    
+                    <a href="" style="color: rgb(10, 190, 10); font-size: 18px;">Show all coupons</a>
+                    
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+    </div>  -->
+
+     
+    <div class="col-md-6 col-lg-12">
+        <div class="coupondiv">
+            <div class="coupon" style="top: 30px; left: 20%; position: absolute; text-align: center;">
+                <h2>Coupon Code</h2>
+                <p>Enter your coupon code if you have one</p><br>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text" name="inpcoupon" placeholder="Coupon code">
+                    <button class="aplybtn">Apply</button><br><br>
+                    <a href="" style="color: rgb(10, 190, 10); font-size: 18px;">Show all coupons</a>
+                    <br><br>
+                    <ul>
+                        {% for coupon in coupons %}
+                           <h5> <li><span style="color: rgb(7, 162, 7);"> {{ coupon.coupon }}</span> - {{ coupon.discount }} /- off - Valid until {{ coupon.valid_to }}</li></h5>
+                           <p> ( Your purchases over 2000/-, This coupon can be used. )</p>
+                           
+                        {% endfor %}
+                        <!-- <p> ( Your purchases over 2000/-, This coupon can be used. )</p> -->
+                    </ul>
+                </form>
+                
+                      
+            </div>
+            
+        </div>
+    </div>
+    <h3>Active Coupons</h3>
+               
+     -->
+</div>
+
+<style>
+
+    /* address */
+    table {
+        width: 100%; /* Ensure table takes the full width */
+        border-collapse: separate;
+        border-spacing: 10px; /* Add spacing between cells */
+    }
+    .check{
+        position: relative;
+        width: 50%;
+        height: 100px;
+        border: solid rgb(245, 242, 242);
+        background-color: white;
+        margin-top: 50px;
+        margin-left: 30px;
+    
+    }
+    .address{
+        position: absolute;
+        padding: 5px;
+    }
+
+    .td{
+        color: black;
+        font-size: 17px;
+
+    }
+
+    .styled-td {
+        font-size: 19px; 
+
+    }
+    .edtbtn{
+        margin-left: 170%;
+    }
+    
+  /* left side */
+
   .container{
     left: 10px;
     right: 10px;
@@ -251,123 +399,87 @@
     border: none;
     font-size: 21px;
     background: none;
-    margin-left: 20px;
+    margin-left: 71px;
 
   }
-.konjmthalli{
+  .btnn:hover{
+    background-color: rgb(255, 50, 50);
+    color: white;
+    padding: 7px;
+  }
+
+  .konjmthalli{
   margin-left: 250px;
   margin-top: -135px;
 
 }
-.order-btn{
-            background-color: orange;
-            border: none;
-            padding: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: -10px;
-            width: 290px;
-            height: 50px;
-            color: black;
-            margin-left: 600px;
-        }
 
-  .orderbtn:hover{
-      color: white;
-    }
+  /* right side  */
+  .amonts{
+    height: 270px;
+    width: 350px;
+    padding: 20px;
+    margin-left: 70%;
+    border-radius: 3px;
+    background-color: white;
+
+  }
+  .prize{
+    margin-left: 90%;
+    margin-top: -197px;
+
+  }
+
+
+  .amounts{
+    width: 400px;
+    margin-left: 50%;
+    margin-top: -200px;
+    height: 350px;
+    background-color: white;
+    position: fixed;
+    padding: 20px;
+    border-radius: 3px;
+    z-index: 8px;
+
+  }
+
     
-.orderbtn{
-  width: 160px;
-  height: 50px;
-  background-color: orange;
-  font-size: 21px;
-  border-radius: 4px;
-  border: none;
-  margin-left: 500px;
-  position: sticky;
-  cursor: pointer;
 
-
-}
-    </style>
-
-
-
-
-
-
-       
-        <script src="../jquery-3.7.1.min.js"></script>
-        
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        
-        <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
-     
-        <script>
-            $(document).ready(function(){
-                $("#qty").change(function(){
-                    x = document.getElementById("qty").value;
-                    y = document.getElementById("price").value;
-                    result = x*y;
-                    document.getElementById("total").value = result;
-                })  
-            })
-            
-        </script>
-
-    </div>
-
-    <div class="col-md-6">
-        <div class="coupondiv">
-            <div class="coupon" style="top: 30px; left: 20%; position: absolute; text-align: center;">
-                <h2>Coupon Code</h2>
-                <p>Enter you coupon code if you are once</p><br>
-                <form action="">
-                    <input type="text" name="" placeholder="Coupon code">
-                    <button class="aplybtn">Apply</button><br><br>
-                    <a href="" style="color: rgb(10, 190, 10); font-size: 18px;">Show all coupons</a>
-                </form>
-        
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
+    /* coupon */
     .coupondiv{
         position: relative;
         width: 475px;
-        height: 300px;
-        border: solid rgb(230, 224, 224);
+        height: 330px;
+        border: solid rgb(243, 236, 236);
         background-color: white;
         text-align: center;
-        margin-left: 111px;
+        margin-left: 66%;
+        margin-top: -670px;
+
     }
+
     .aplybtn{
     
         width: 100px;
         height: 35px;
         font-size: 18px;
 
-    }
+    } 
     .aplybtn:hover{
         background-color: rgb(13, 219, 13);
         color: white;
         border: none;
+
     }
     .coupon input{
         width: 200px;
         height: 35px;
         font-size: 17px;
         padding-left: 12px;
+
     }
-</style>
-
-
-
-
-
+</style> 
 
 
 

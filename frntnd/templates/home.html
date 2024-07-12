@@ -47,7 +47,7 @@
                   <a href="{% url 'frntnd:whishlist' %}">whishlist</a>
                 </li>
                 <li>
-                  <a href="{% url 'frntnd:contact' %}">orders</a>
+                  <a href="{% url 'frntnd:userorders' %}">orders</a>
                 </li>
                 <li>
                   <a href="{% url 'frntnd:contact' %}">Contact Us</a>
@@ -353,7 +353,7 @@
         <div class="col-lg-4 col-md-6">
           <div class="single-blog">
             <div class="thumb">
-              <img class="img-fluid" src="img/b1.jpg" alt="">
+              <img class="img-fluid" src="{% static 'Home/img/product/new-product/walmart.jpg' %}" alt="">
             </div>
             <div class="short_details">
               <div class="meta-top d-flex">
@@ -378,7 +378,7 @@
         <div class="col-lg-4 col-md-6">
           <div class="single-blog">
             <div class="thumb">
-              <img class="img-fluid" src="img/b2.jpg" alt="">
+              <img class="img-fluid" src="{% static 'Home/img/product/new-product/flip.jpg' %}" alt="">
             </div>
             <div class="short_details">
               <div class="meta-top d-flex">
@@ -403,7 +403,7 @@
         <div class="col-lg-4 col-md-6">
           <div class="single-blog">
             <div class="thumb">
-              <img class="img-fluid" src="img/b3.jpg" alt="">
+              <img class="img-fluid" src="{% static 'Home/img/product/new-product/sh.jpg' %}" alt="">
             </div>
             <div class="short_details">
               <div class="meta-top d-flex">

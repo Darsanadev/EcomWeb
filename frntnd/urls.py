@@ -28,6 +28,7 @@ urlpatterns = [
     path('apps/', views.apps, name='apps'),
     
     
+    path('userorders/', views.userorders, name='userorders'),
     path('contact/', views.contact, name='contact'),
     path('whishlist/', views.whishlist, name='whishlist'),
     path('cart/', views.cart, name='cart'),

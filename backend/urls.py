@@ -25,8 +25,12 @@ urlpatterns = [
     path('prodelete/<int:id>/', views.prodelete, name='prodelete'),
     path('pro_list/<int:id>/', views.pro_list, name='pro_list'),
 
-    path('userdata/', views.userdata, name='userdata'),
-    path('user/', views.user, name='user'),
     path('adminlogin/', views.adminlogin, name='adminlogin'),
+    path('user/', views.user, name='user'),
+    path('orders/', views.orders, name='orders'),
+    path('coupon/', views.coupon, name='coupon'),
+    path('coupondisplay/', views.coupondisplay, name='coupondisplay'),
+    path('couponedit/<int:id>', views.couponedit, name='couponedit'),
+
 
 ]

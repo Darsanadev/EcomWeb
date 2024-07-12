@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
-from .models import  Category, Brand, Product
+from .models import  Category, Brand, Product, Coupon
 from frntnd.models import Useraccount
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from datetime import datetime, date
 
 # Create your views here.       
     
@@ -75,7 +76,7 @@ def cate_list(request, id):
             catelst.is_listed=False
 
         catelst.save()
-        return redirect('backend:catedisplay')
+        return redirect('backend:categorydisplay')
     return redirect('backend:branddisplay')
        
 
@@ -94,7 +95,6 @@ def brand(request):
         brand = Brand(brand=brand, description=description, offer=offer, is_listed=is_listed)
         brand.save()  
     return render(request, 'brand.html')
-
 
 
 def branddisplay(request):
@@ -136,6 +136,7 @@ def brand_list(request, id):
         brandlst.save()
         return redirect('backend:branddisplay')
     return redirect('backend:branddisplay')
+
 
 
 # views of Products
@@ -229,6 +230,36 @@ def pro_list(request, id):
 
 # views of user 
 
+def coupon(request):
+    if request.method == 'POST':
+        coupon = request.POST.get('coupon')
+        amount = request.POST.get('discount')
+        valid_from = request.POST.get('valid_from')
+        valid_to = request.POST.get('valid_to')
+        couponcode = Coupon(coupon=coupon, discount=amount, valid_from=valid_from, valid_to=valid_to)
+        couponcode.save()
+    return render(request, 'coupon.html')
+
+now = date.today()
+print("date of now ", now)
+
+def coupondisplay(request):
+    coupons = Coupon.objects.all()
+    now = date.today()
+    print("date of now is :", now)
+    
+    for coupon in coupons:
+        if coupon.valid_from <= now <= coupon.valid_to:
+            coupon.active = True
+        else:
+            coupon.active = False
+        coupon.save()
+    return render(request, 'coupondisplay.html', {'coupons': coupons})
+
+def couponedit(request, id):
+    coponcode = Coupon.objects.get(id=id)
+    return render(request, 'couponedit.html', {'coponcode':coponcode})
+
 def user(request):  
     acc = Useraccount.objects.all()
     return render(request, 'user.html', {'acc': acc})
@@ -244,5 +275,6 @@ def userblock(request):
     return redirect('usrblck')
 
 
-def userdata(request):
-    return render(request, 'userdata.html')
+def orders(request):
+    return render(request, 'Orders.html')
+
